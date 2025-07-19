@@ -15,6 +15,10 @@ import {
 } from "./transaction.service";
 import { findUserById } from "../user/user.service";
 import { findAdminById } from "../admin/admin.service";
+import {
+  createBeneficiary,
+  ownBeneficiary,
+} from "../beneficiary/beneficiary.services";
 
 //Schemas
 import {
@@ -67,6 +71,33 @@ export const createNewTransactionHandler = async (
     request.body,
     transactionId
   );
+
+  //Create a beneficiary if it exists
+  if (request.body.beneficiary === true) {
+    //Check if the beneficiary already exists
+    const exists = await ownBeneficiary(
+      request.body.details.fullName,
+      request.body.details.accountNumber,
+      userId
+    );
+    if (!exists) {
+      const data = {
+        accountNumber: request.body.details.accountNumber,
+        fullName: request.body.details.fullName,
+        bankName: request.body.details.bankName,
+        user: userId,
+        note: request.body.note,
+      };
+      const newBeneficiary = await createBeneficiary(data);
+      if (!newBeneficiary)
+        return sendResponse(
+          reply,
+          400,
+          false,
+          `Failed to add ${request.body.details.fullName} as a beneficiary. Please try again.`
+        );
+    }
+  }
 
   // Handle mirrored credit transaction if recipient is present and different from sender
   const recipientId = request.body.details?.recipient;

@@ -19,22 +19,20 @@ const transactionCore = z.object({
     required_error: "Amount is required",
   }),
   description: z.string().optional(),
-  details: z
-    .object({
-      accountNumber: z.string({
-        required_error: "Account Number is Required",
-      }),
-      recipient: z.string().optional(),
-      fullName: z.string({
-        required_error: "Full Name is Required",
-      }),
-      bankName: z.string({
-        required_error: "Bank Name is Required",
-      }),
-      otherDetails: z.string().optional(),
-      balanceAfterTransaction: z.number().optional(),
-    })
-    .optional(),
+  details: z.object({
+    accountNumber: z.string({
+      required_error: "Account Number is Required",
+    }),
+    recipient: z.string().optional(),
+    fullName: z.string({
+      required_error: "Full Name is Required",
+    }),
+    bankName: z.string({
+      required_error: "Bank Name is Required",
+    }),
+    otherDetails: z.string().optional(),
+    balanceAfterTransaction: z.number().optional(),
+  }),
   status: z.string().optional(),
   initiatedBy: z.nativeEnum(Initiator).optional(),
   createdAt: z.string().datetime().optional(),
@@ -46,7 +44,10 @@ const transactionWithMeta = transactionCore.extend({
   transactionId: z.string(),
 });
 
-const createTransactionSchema = transactionCore;
+const createTransactionSchema = transactionCore.extend({
+  beneficiary: z.boolean().optional(),
+  note: z.string().optional(),
+});
 
 const createUserTransactionSchema = createTransactionSchema.extend({
   user: z.string({

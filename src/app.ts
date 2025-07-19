@@ -19,6 +19,7 @@ import { notificationSchemas } from "./modules/notifications/notifications.schem
 import { cardRequestSchemas } from "./modules/cardRequest/cardRequest.schema";
 import { activitySchemas } from "./modules/activity/activity.schema";
 import { loanSchemas } from "./modules/loan/loan.schema";
+import { beneficiarySchemas } from "./modules/beneficiary/beneficiary.schema";
 
 // Routes
 import userRoutes from "./modules/user/user.route";
@@ -28,7 +29,8 @@ import adminRoutes from "./modules/admin/admin.route";
 import notificationRoutes from "./modules/notifications/notifications.routes";
 import cardRequestRoutes from "./modules/cardRequest/cardRequest.routes";
 import activityRoutes from "./modules/activity/activity.routes";
-import { loanRoutes } from "./modules/loan/loan.routes";
+import loanRoutes from "./modules/loan/loan.routes";
+import beneficiaryRoutes from "./modules/beneficiary/beneficiary.routes";
 
 //  Utils
 import { sendResponse } from "./utils/response.utils";
@@ -149,6 +151,7 @@ export const buildApp = (): FastifyInstance => {
     ...cardRequestSchemas,
     ...activitySchemas,
     ...loanSchemas,
+    ...beneficiarySchemas,
   ]) {
     app.addSchema(schema);
   }
@@ -161,6 +164,7 @@ export const buildApp = (): FastifyInstance => {
   app.register(cardRequestRoutes, { prefix: "/v1/api/cards" });
   app.register(activityRoutes, { prefix: "/v1/api/activities" });
   app.register(loanRoutes, { prefix: "/v1/api/loans" });
+  app.register(beneficiaryRoutes, { prefix: "/v1/api/beneficiary" });
 
   // Health Check Endpoint
   app.get("/healthcheck", async () => {

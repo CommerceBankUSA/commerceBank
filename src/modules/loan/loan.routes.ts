@@ -18,7 +18,7 @@ import {
 } from "./loan.schema";
 import { generalRef, PaginationInput } from "../general/general.schema";
 
-export async function loanRoutes(app: FastifyInstance) {
+export default async function loanRoutes(app: FastifyInstance) {
   //Create new card request
   app.post<{ Body: CreateLoanInput }>(
     "/new",

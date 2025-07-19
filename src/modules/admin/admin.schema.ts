@@ -49,6 +49,7 @@ const generalAdminResponseSchema = z.object({
     role: z.nativeEnum(AdminRole).optional(),
     lastSession: z.string().date().optional(),
     encryptedPassword: z.string(),
+    createdAt: z.string().datetime(),
   }),
 });
 
@@ -61,6 +62,7 @@ const fetchAdminsResponseSchema = z.object({
       role: z.nativeEnum(AdminRole).optional(),
       lastSession: z.string().date().optional(),
       encryptedPassword: z.string(),
+      createdAt: z.string().datetime(),
     })
   ),
 });

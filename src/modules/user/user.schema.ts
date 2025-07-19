@@ -38,7 +38,6 @@ const userCore = {
   address: z.string().optional(),
   phoneNumber: z.string(),
   encryptedPassword: z.string(),
-  passPhrase: z.array(z.string()),
   accountId: z.string(),
   gender: z.enum(["male", "female", "prefer not to say"]).optional(),
   kyc: z
@@ -47,6 +46,7 @@ const userCore = {
       idType: z.string().optional(),
       isApproved: z.boolean().optional(),
       lastSubmissionDate: z.string().datetime().optional(),
+      status: z.enum(["pending", "accepted", "rejected"]).optional(),
     })
     .optional(),
   profilePicture: z.string().url().optional(),
@@ -130,7 +130,6 @@ const editUserSchema = z.object({
     .optional(),
   isVerified: z.boolean().optional(),
   profilePicture: z.string().url().optional(),
-  isAdminVerified: z.boolean().optional(),
   isFullyVerified: z.boolean().optional(),
   isSuspended: z.boolean().optional(),
   minimumTransfer: z.string().optional(),
@@ -140,6 +139,7 @@ const editUserSchema = z.object({
       isApproved: z.boolean().optional(),
       idType: z.string().optional(),
       lastSubmissionDate: z.date().optional(),
+      status: z.enum(["pending", "accepted", "rejected"]).optional(),
     })
     .optional(),
   encryptedPassword: z.string().optional(),
