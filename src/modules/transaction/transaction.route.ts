@@ -107,6 +107,19 @@ export default async function transactionRoutes(app: FastifyInstance) {
     fetchAllUserTransactionsHandler
   );
 
+  //Fetch a user balance
+  app.get(
+    "/getBalance",
+    {
+      preHandler: app.authenticate,
+      schema: {
+        tags: ["Transactions", "Users"],
+        security: [{ bearerAuth: [] }],
+      },
+    },
+    getUserBalanceHandler
+  );
+
   //Admin Routes
 
   //Create a new transaction for a user
