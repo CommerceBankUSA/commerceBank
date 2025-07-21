@@ -31,7 +31,7 @@ declare type User = {
   profilePicture: string;
   gender: "male" | "female" | "prefer not to say";
   isVerified: boolean;
-  isAdminVerified: boolean;
+  isFullyVerified: boolean;
   isSuspended: boolean;
   suspendedDate: Date | null;
   minimumTransfer: number | null;

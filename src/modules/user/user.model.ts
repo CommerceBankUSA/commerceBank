@@ -33,7 +33,6 @@ export type UserDocument = Document & {
   verificationCodeExpiry: Date;
   passwordResetCode: string | null;
   isVerified: boolean;
-  isAdminVerified: boolean;
   isFullyVerified: boolean;
   isSuspended: boolean;
   suspendedDate: Date | null;

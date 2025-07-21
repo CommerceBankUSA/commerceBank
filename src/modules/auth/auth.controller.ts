@@ -164,9 +164,11 @@ export const validateLoginHandler = async (
 
   const redirect = !user.isVerified
     ? "verification"
-    : !user.kyc.lastSubmissionDate || user.kyc.status === "rejected"
-      ? "kyc"
-      : "user/dashboard";
+    : !user.isFullyVerified
+      ? "pending"
+      : !user.kyc.lastSubmissionDate || user.kyc.status === "rejected"
+        ? "kyc"
+        : "user/dashboard";
 
   return sendResponse(reply, 200, true, "Authenticated successfully", {
     accessToken: app.jwt.sign(plainUser),
