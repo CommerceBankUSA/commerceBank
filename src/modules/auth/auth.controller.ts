@@ -144,10 +144,6 @@ export const validateLoginHandler = async (
       "Authentication failed: Invalid OTP. Please try again."
     );
 
-  //Make the user password field null again
-  user.verificationCode = "";
-  await user.save();
-
   const plainUser = user.toObject() as User;
   const loginDetails = await getLoginDetails(request);
 
