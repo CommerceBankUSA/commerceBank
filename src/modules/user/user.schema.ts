@@ -55,7 +55,6 @@ const userCore = {
   tacPin: z.string().nullable(),
   insurancePin: z.string().nullable(),
   isVerified: z.boolean(),
-  isAdminVerified: z.boolean(),
   isFullyVerified: z.boolean(),
   isSuspended: z.boolean(),
   suspendedDate: z.string().datetime().nullable(),

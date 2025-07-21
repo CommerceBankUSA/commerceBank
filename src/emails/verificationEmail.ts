@@ -8,9 +8,9 @@ export default ({
   html: `<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome Email</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Email Verification</title>
   <style>
     body {
       margin: 0;
@@ -62,7 +62,7 @@ export default ({
       margin-top: 30px;
     }
     @media screen and (max-width: 480px) {
-      .content h1{
+      .content h1 {
         font-size: 20px;
       }
       .code {
@@ -77,43 +77,38 @@ export default ({
 <body>
   <div class="email-container">
     <div class="header">
-      <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1747069311/logo_saspld.png" alt="Commerce Bank USA Logo">
+      <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1753090598/logo_oicitz.png" alt="Commerce Bank USA Logo">
     </div>
     <div class="content">
       <h1>Verify Your Email Address</h1>
       <p>Hi ${name},</p>
-      <p>To ensure the security and authenticity of your account, we require email verification. This step helps us protect your identity and provide a safe community for all users.</p>
+      <p>Thank you for joining Commerce Bank USA! As part of our commitment to your security, we ask that you verify your email address to complete the account setup process.</p>
       <p style="color: #1D9B5E; font-size: 28px; font-weight: 800">${verificationCode}</p>
-      <p>This code is valid for Ten (10) minutes</p>
-      <h2>What to Expect After Verification:</h2>
+      <p>This code will expire in 10 minutes. Please enter it promptly to continue.</p>
+      <h2>Why This Matters</h2>
       <ul>
-        <li style="margin-top: 10px">Enhanced account security.</li>
-        <li style="margin-top: 10px">High Priority Support.</li>
-        <li style="margin-top: 10px">Access to all and exclusive features.</li>
+        <li style="margin-top: 10px">✅ Verify ownership of your email address.</li>
+        <li style="margin-top: 10px">✅ Strengthen protection against unauthorized access.</li>
+        <li style="margin-top: 10px">✅ Enable full access to your online banking tools.</li>
       </ul>
-      <h2>Why Verify?</h2>
-      <ul>
-        <li style="margin-top: 10px">Confirm your email address is valid.</li>
-        <li style="margin-top: 10px">Prevent unauthorized account access.</li>
-      </ul>
-      <h2>Need Help?</h2>
-      <p>If you encounter issues or have questions, our Support Team is here to assist.</p>
-      <p>Best regards,<br>The Commerce Bank USA Team</p>
+      <h2>Need Assistance?</h2>
+      <p>We're here to help. If you have any issues verifying your email, please contact our support team.</p>
+      <p>Warm regards,<br/>The Commerce Bank USA Team</p>
     </div>
   </div>
-    <div class="footer">
-      <p><span class="footerSpan">Commerce Bank USA</span> at the touch of a button! Download our app for:</p>
-      <p>
-        <a href="https://play.google.com">Google Play</a> |
-        <a href="https://apps.apple.com">App Store</a>
-      </p>
-      <p>
-       <span>Questions or concerns? Get in touch with us at <a href="mailto:support@commercebankusa.com">support@commercebankusa.com</a></span> <br />
-       <span>Never miss a beat! Follow us on Twitter, Facebook and Instagram</span>
-      </p>
-      <p>Don't want any more emails from us? <a href="#" style="color: #F75555;">Unsubscribe</a></p>
-      <p class="footerCopy">&copy; ${new Date().getFullYear()} Commerce Bank USA. All rights reserved.</p>
-    </div>
+  <div class="footer">
+    <p><span class="footerSpan">Commerce Bank USA</span> — banking made easy. Download our app to get started:</p>
+    <p>
+      <a href="https://play.google.com">Google Play</a> |
+      <a href="https://apps.apple.com">App Store</a>
+    </p>
+    <p>
+      <span>Need help? Contact us at <a href="mailto:support@commercebankusa.com">support@commercebankusa.com</a></span><br />
+      <span>Follow us for updates on Facebook, Twitter, and Instagram.</span>
+    </p>
+    <p>Prefer not to receive these emails? <a href="#" style="color: #F75555;">Unsubscribe</a></p>
+    <p class="footerCopy">&copy; ${new Date().getFullYear()} Commerce Bank USA. All rights reserved.</p>
+  </div>
 </body>
 </html>`,
 });

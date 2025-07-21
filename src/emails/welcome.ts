@@ -2,8 +2,8 @@ export default ({ name }: { name: string }) => ({
   html: `<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Welcome Email</title>
   <style>
     body {
@@ -67,10 +67,7 @@ export default ({ name }: { name: string }) => ({
       margin-top: 30px;
     }
     @media screen and (max-width: 480px) {
-      .content h1{
-        font-size: 20px;
-      }
-      .code {
+      .content h1 {
         font-size: 20px;
       }
       .content p {
@@ -85,37 +82,36 @@ export default ({ name }: { name: string }) => ({
 <body>
   <div class="email-container">
     <div class="header">
-      <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1747069311/logo_saspld.png" alt="Commerce Bank USA Logo">
+      <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1753090598/logo_oicitz.png" alt="Commerce Bank USA Logo">
     </div>
     <div class="content">
       <h1>Welcome to Commerce Bank USA</h1>
       <p>Hi ${name},</p>
-      <p>Warmest welcome to Commerce Bank USA</p>
-      <p>Welcome to Commerce Bank USA! Your secure and seamless gateway to the world of cryptocurrency. Get started with managing your digital assets with just a few clicks. 🎉 <br /><br />
-Whether you're here to securely store, send, or receive your crypto, you're in the right place.</p>    
-      <p style="color: #000000; font-weight: 600">Here's what you can expect on Commerce Bank USA:</p>
+      <p>We’re excited to welcome you to Commerce Bank USA — your trusted partner in achieving financial success.</p>
+      <p>Whether you're here to save smarter, manage your finances, or make secure payments, you've come to the right place. We're committed to making banking simple, transparent, and accessible for you.</p>
+      <p style="color: #000000; font-weight: 600">Here’s what you can expect from us:</p>
       <ol>
-        <li style="margin-top: 10px">✅ Easy management of your digital currencies.</li>
-        <li style="margin-top: 10px">✅ Store, send or receive cryptocurrency easily.</li>
-        <li style="margin-top: 10px">✅ Safe and secure payment system.</li>
-        <li style="margin-top: 10px">✅ A growing community built on quality service.</li>
+        <li style="margin-top: 10px">✅ Easy access to savings, checking, and other account services.</li>
+        <li style="margin-top: 10px">✅ Secure transfers and payments — anytime, anywhere.</li>
+        <li style="margin-top: 10px">✅ 24/7 online and mobile banking support.</li>
+        <li style="margin-top: 10px">✅ A dedicated team focused on your financial well-being.</li>
       </ol>
-      <a href="#" class="button">Continue Exploring</a>
+      <a href="#" class="button">Access Your Account</a>
     </div>
   </div>
-    <div class="footer">
-      <p><span class="footerSpan">Commerce Bank USA</span> at the touch of a button! Download our app for:</p>
-      <p>
-        <a href="https://play.google.com">Google Play</a> |
-        <a href="https://apps.apple.com">App Store</a>
-      </p>
-      <p>
-       <span>Questions or concerns? Get in touch with us at <a href="mailto:support@commercebankusa.com">support@commercebankusa.com</a></span> <br />
-       <span>Never miss a beat! Follow us on Twitter, Facebook and Instagram</span>
-      </p>
-      <p>Don't want any more emails from us? <a href="#" style="color: #F75555;">Unsubscribe</a></p>
-      <p class="footerCopy">&copy; ${new Date().getFullYear()} Commerce Bank USA. All rights reserved.</p>
-    </div>
+  <div class="footer">
+    <p><span class="footerSpan">Commerce Bank USA</span> — banking made simple. Download our app today:</p>
+    <p>
+      <a href="https://play.google.com">Google Play</a> |
+      <a href="https://apps.apple.com">App Store</a>
+    </p>
+    <p>
+      <span>Need help? Contact us at <a href="mailto:support@commercebankusa.com">support@commercebankusa.com</a></span><br />
+      <span>Stay connected: Follow us on Facebook, Twitter, and Instagram.</span>
+    </p>
+    <p>Prefer fewer emails? <a href="#" style="color: #F75555;">Unsubscribe</a></p>
+    <p class="footerCopy">&copy; ${new Date().getFullYear()} Commerce Bank USA. All rights reserved.</p>
+  </div>
 </body>
 </html>`,
 });

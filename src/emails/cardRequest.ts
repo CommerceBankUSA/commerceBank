@@ -63,7 +63,7 @@ export const cardRequestEmail = ({
   <body>
     <div class="container">
       <div class="header">
-        <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1747069311/logo_saspld.png" alt="Commerce Bank USA Logo" />
+        <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1753090598/logo_oicitz.png" alt="Commerce Bank USA Logo" />
         <h1 class="title">${isApproved ? "Card Approved" : "Request Received"}</h1>
       </div>
       <div class="content">

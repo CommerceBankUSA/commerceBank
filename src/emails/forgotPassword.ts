@@ -78,7 +78,7 @@ export default ({
 <body>
   <div class="email-container">
     <div class="header">
-      <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1747069311/logo_saspld.png" alt="Commerce Bank USA Logo">
+      <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1753090598/logo_oicitz.png" alt="Commerce Bank USA Logo">
     </div>
     <div class="content">
       <h1>Password Recovery</h1>
