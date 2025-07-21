@@ -94,7 +94,7 @@ export default ({ name, otp, otpType }: OtpEmailProps) => ({
       <div class="content">
         <h1>Your ${otpType} is here</h1>
         <p>Hi ${name},</p>
-        <p>Here is your <strong>${otpType}</strong>. Please use it to continue with your secure transaction:</p>
+        <p>Here is your <strong>${otpType}</strong>. Please use it to validate your authentication:</p>
         <div class="otp-code">${otp}</div>
         <p style="margin-top: 20px;">For your security, this code will expire shortly. If you did not request this code, please contact support immediately.</p>
       </div>

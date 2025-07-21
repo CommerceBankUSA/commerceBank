@@ -88,7 +88,7 @@ export default ({
         <p><strong>Device:</strong> ${userAgent}</p>
         <p><strong>Date & Time:</strong> ${date}</p>
       </div>
-      <p>If this was you, no further action is needed. If not, please secure your account immediately by resetting your password, or contact support: <span class="footerSpan">support@commercebankusa.com</span></p>
+      <p>If this was you, no further action is needed. If not, please secure your account immediately by resetting your password, or contact support: <span class="footerSpan" style="color: #1D9B5E">support@commercebankusa.com</span></p>
     </div>
   </div>
   <div class="footer">

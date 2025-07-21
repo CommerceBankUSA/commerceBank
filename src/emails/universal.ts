@@ -87,7 +87,7 @@ export default ({
         <p>Hi ${name},</p>
         <p>Your one-time code for <strong>${purpose}</strong> is:</p>
         <div class="code-box">${code}</div>
-        <p>This code is valid for the next 10 minutes. Please do not share it with anyone.</p>
+        <p>Please do not share it with anyone.</p>
         <p>If you did not request this code, please ignore this email or contact support immediately.</p>
       </div>
     </div>
