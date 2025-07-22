@@ -27,6 +27,7 @@ import {
 import { FILE_SIZE, SMTP_FROM_EMAIL } from "../../config";
 import welcome from "../../emails/welcome";
 import verificationEmail from "../../emails/verificationEmail";
+import fullyVerified from "../../emails/fullyVerified";
 
 //Utils
 import { sendResponse } from "../../utils/response.utils";
@@ -523,13 +524,6 @@ export const editUserHandler = async (
       false,
       "Sorry, but you are not authorized to perform this action"
     );
-  if (admin.role !== "super_admin")
-    return sendResponse(
-      reply,
-      403,
-      false,
-      "Sorry, you are not authorized enough to perform this action"
-    );
 
   const user = await findUserByEmail(request.body.email);
   if (!user)
@@ -541,6 +535,26 @@ export const editUserHandler = async (
     );
 
   const updatedUser = await updateUser(request.body);
+
+  //Send an email and notification if the update contains fully verified
+  if (request.body.isFullyVerified === true) {
+    const verifiedTemplate = fullyVerified({ name: user.fullName });
+    await sendEmail({
+      from: SMTP_FROM_EMAIL,
+      to: user.email,
+      subject: verifiedTemplate.subject,
+      html: verifiedTemplate.html,
+    });
+
+    await emitAndSaveNotification({
+      user: user._id as string,
+      type: "alert",
+      subtype: "profile",
+      title: "🎉 Account is Fully Verified",
+      message:
+        "Congratulations! Your Commerce Bank USA account has been fully verified. You now have complete access to all our services and features — from managing your savings and checking accounts to making secure payments, transfers, and more",
+    });
+  }
 
   //Return
   return sendResponse(

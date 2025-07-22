@@ -92,7 +92,7 @@ export default ({
     </div>
   </div>
   <div class="footer">
-    <p><span class="footerSpan">Commerce Bank USA</span> — Your trusted crypto partner</p>
+    <p><span class="footerSpan">Commerce Bank USA</span> — Your secure banking provider</p>
     <p>Need help? <a href="mailto:support@commercebankusa.com">Contact Support</a></p>
     <p class="footerCopy">&copy; ${new Date().getFullYear()} Commerce Bank USA. All rights reserved.</p>
   </div>
