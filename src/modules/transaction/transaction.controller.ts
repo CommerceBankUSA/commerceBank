@@ -375,7 +375,7 @@ export const fetchAllUserTransactionsHandler = async (
   );
 };
 
-// Administrative Endpoint
+// Administrative Handlers
 
 //Create a new transaction
 export const createUserTransactionHandler = async (

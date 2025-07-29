@@ -1,0 +1,79 @@
+import SavingsModel, { SavingsStatus } from "./savings.model";
+
+//Schema
+import { CreateSavingsInput } from "./savings.schema";
+
+//Create Savings Service
+export const createSavings = async (input: CreateSavingsInput) => {
+  const newSavings = await SavingsModel.create(input);
+  return newSavings;
+};
+
+//Fetch a Users Savings
+export const fetchUserSavings = async (user: string) => {
+  return await SavingsModel.find({ user });
+};
+
+//Fetch all Savings
+export const getAllSavings = async (page = 1, limit = 10) => {
+  const skip = (page - 1) * limit;
+  const total = await SavingsModel.countDocuments();
+  const requests = await SavingsModel.find()
+    .populate("user", "userName email accountId profilePicture")
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  return {
+    total,
+    page,
+    limit,
+    data: requests,
+  };
+};
+
+//Delete Savings
+export const deleteSavings = async (id: string) => {
+  return await SavingsModel.findByIdAndDelete(id);
+};
+
+//Daily Interest Calculations
+export const applyDailyInterest = async () => {
+  const activeSavings = await SavingsModel.find({
+    status: SavingsStatus.ACTIVE,
+  });
+
+  const today = new Date();
+  const updatedSavings = [];
+
+  for (const saving of activeSavings) {
+    const lastDate = new Date(saving.lastInterestDate);
+    const daysDiff = Math.floor(
+      (today.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
+
+    if (daysDiff >= 1) {
+      const isFixed = saving.targetAmount && saving.endDate;
+      const rate = isFixed ? 0.044 : 0.04;
+
+      const interest = saving.savedAmount * rate * daysDiff;
+      saving.savedAmount += interest;
+      saving.totalInterestAccrued += interest;
+      saving.lastInterestDate = today;
+
+      // Check if target reached
+      if (
+        isFixed &&
+        typeof saving.targetAmount === "number" &&
+        saving.savedAmount >= saving.targetAmount &&
+        saving.endDate &&
+        today >= new Date(saving.endDate)
+      ) {
+        saving.status = SavingsStatus.COMPLETED;
+      }
+      updatedSavings.push(saving.save());
+    }
+  }
+
+  await Promise.all(updatedSavings);
+};

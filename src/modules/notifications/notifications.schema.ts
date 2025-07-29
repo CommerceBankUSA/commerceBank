@@ -5,6 +5,7 @@ import { buildJsonSchemas } from "fastify-zod";
 import { responseCore } from "../general/general.schema";
 
 const notificationCore = {
+  _id: z.string(),
   user: z.string(),
   type: z.string(),
   subtype: z.string().optional(),

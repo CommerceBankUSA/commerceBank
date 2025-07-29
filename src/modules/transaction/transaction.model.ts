@@ -19,6 +19,8 @@ export enum SubType {
   REFUND = "refund",
   INTEREST = "interest",
   CASH_BACK = "cash back",
+  CRYPTO = "cryptocurrency",
+  SAVINGS = "savings",
 }
 
 export enum TransactionStatus {
@@ -62,7 +64,7 @@ const transactionSchema: Schema = new Schema<TransactionDocument>({
     enum: Object.values(TransactionType),
     required: true,
   },
-  subType: { type: String, enum: Object.values(SubType) },
+  subType: { type: String, enum: Object.values(SubType), required: true },
   description: { type: String },
   amount: { type: Number, required: true },
   details: {

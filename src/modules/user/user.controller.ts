@@ -441,6 +441,20 @@ export const updateUserHandler = async (
       : "Your profile was updated successfully!, kindly verify your new details.",
   });
 
+  if (request.body.freezeCard) {
+    await emitAndSaveNotification({
+      user: userId,
+      type: "alert",
+      subtype: "card",
+      title:
+        request.body.freezeCard === true ? "Card Suspended" : "Card Reinstated",
+      message:
+        request.body.freezeCard === true
+          ? "Your card is now frozen. You can unfreeze it anytime in the app."
+          : "Your card is now active. You can freeze it anytime in the app",
+    });
+  }
+
   //Return
   return sendResponse(
     reply,

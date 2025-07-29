@@ -39,6 +39,7 @@ export type UserDocument = Document & {
   encryptedPassword: string;
   minimumTransfer: number | null;
   transferPin: string | null;
+  freezeCard: boolean;
   taxPin: string | null;
   tacPin: string | null;
   insurancePin: string | null;
@@ -99,6 +100,7 @@ const userSchema = new Schema<UserDocument>(
     encryptedPassword: { type: String, required: true },
     minimumTransfer: { type: Number, default: null },
     transferPin: { type: String, default: null },
+    freezeCard: { type: Boolean, default: false },
     taxPin: { type: String, default: null },
     tacPin: { type: String, default: null },
     insurancePin: { type: String, default: null },

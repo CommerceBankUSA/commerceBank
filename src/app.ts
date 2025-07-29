@@ -9,6 +9,9 @@ import cors from "@fastify/cors";
 import fastifyMultipart from "@fastify/multipart";
 import { FILE_SIZE, JWT_SECRET } from "./config";
 
+//Crons
+import { registerSavingsCron } from "./cron/savings.cron";
+
 // Schemas
 import { userSchemas } from "./modules/user/user.schema";
 import { generalSchemas } from "./modules/general/general.schema";
@@ -20,6 +23,7 @@ import { cardRequestSchemas } from "./modules/cardRequest/cardRequest.schema";
 import { activitySchemas } from "./modules/activity/activity.schema";
 import { loanSchemas } from "./modules/loan/loan.schema";
 import { beneficiarySchemas } from "./modules/beneficiary/beneficiary.schema";
+import { savingsSchemas } from "./modules/savings/savings.schema";
 
 // Routes
 import userRoutes from "./modules/user/user.route";
@@ -31,6 +35,7 @@ import cardRequestRoutes from "./modules/cardRequest/cardRequest.routes";
 import activityRoutes from "./modules/activity/activity.routes";
 import loanRoutes from "./modules/loan/loan.routes";
 import beneficiaryRoutes from "./modules/beneficiary/beneficiary.routes";
+import savingsRoutes from "./modules/savings/savings.routes";
 
 //  Utils
 import { sendResponse } from "./utils/response.utils";
@@ -71,7 +76,7 @@ export const app: FastifyInstance = Fastify({
 });
 
 // Build the Fastify app
-export const buildApp = (): FastifyInstance => {
+export const buildApp = async (): Promise<FastifyInstance> => {
   //For the documentation
   setupSwagger(app);
 
@@ -152,6 +157,7 @@ export const buildApp = (): FastifyInstance => {
     ...activitySchemas,
     ...loanSchemas,
     ...beneficiarySchemas,
+    ...savingsSchemas,
   ]) {
     app.addSchema(schema);
   }
@@ -165,6 +171,10 @@ export const buildApp = (): FastifyInstance => {
   app.register(activityRoutes, { prefix: "/v1/api/activities" });
   app.register(loanRoutes, { prefix: "/v1/api/loans" });
   app.register(beneficiaryRoutes, { prefix: "/v1/api/beneficiary" });
+  app.register(savingsRoutes, { prefix: "/v1/api/savings" });
+
+  // Register cron jobs
+  await registerSavingsCron(app);
 
   // Health Check Endpoint
   app.get("/healthcheck", async () => {
