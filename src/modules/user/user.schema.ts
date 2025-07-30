@@ -39,12 +39,12 @@ const userCore = {
   phoneNumber: z.string(),
   encryptedPassword: z.string(),
   accountId: z.string(),
+  accountNumber: z.string(),
   gender: z.enum(["male", "female", "prefer not to say"]).optional(),
   kyc: z
     .object({
       images: z.array(z.string()).optional(),
       idType: z.string().optional(),
-      isApproved: z.boolean().optional(),
       lastSubmissionDate: z.string().datetime().optional(),
       status: z.enum(["pending", "accepted", "rejected"]).optional(),
     })
@@ -137,7 +137,6 @@ const editUserSchema = z.object({
   kyc: z
     .object({
       images: z.array(z.string()).optional(),
-      isApproved: z.boolean().optional(),
       idType: z.string().optional(),
       lastSubmissionDate: z.date().optional(),
       status: z.enum(["pending", "accepted", "rejected"]).optional(),
