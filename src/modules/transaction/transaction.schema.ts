@@ -14,34 +14,36 @@ const transactionCore = z.object({
   transactionType: z.nativeEnum(TransactionType, {
     required_error: "Transaction type is required",
   }),
-  subType: z.nativeEnum(SubType).optional(),
+  subType: z.nativeEnum(SubType),
   amount: z.number({
     required_error: "Amount is required",
   }),
   description: z.string().optional(),
-  details: z.object({
-    accountNumber: z.string({
-      required_error: "Account Number is Required",
-    }),
-    recipient: z.string().optional(),
-    fullName: z.string({
-      required_error: "Full Name is Required",
-    }),
-    bankName: z.string({
-      required_error: "Bank Name is Required",
-    }),
-    otherDetails: z.string().optional(),
-    balanceAfterTransaction: z.number().optional(),
-  }),
+  details: z
+    .object({
+      accountNumber: z.string({
+        required_error: "Account Number is Required",
+      }),
+      recipient: z.string().optional(),
+      fullName: z.string({
+        required_error: "Full Name is Required",
+      }),
+      bankName: z.string({
+        required_error: "Bank Name is Required",
+      }),
+      otherDetails: z.string().optional(),
+      balanceAfterTransaction: z.number().optional(),
+    })
+    .optional(),
   status: z.string().optional(),
   initiatedBy: z.nativeEnum(Initiator).optional(),
-  createdAt: z.string().datetime().optional(),
 });
 
 const transactionWithMeta = transactionCore.extend({
   user: z.string(),
   _id: z.string(),
   transactionId: z.string(),
+  createdAt: z.string().datetime(),
 });
 
 const createTransactionSchema = transactionCore.extend({

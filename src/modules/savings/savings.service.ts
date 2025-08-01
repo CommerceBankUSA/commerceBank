@@ -32,6 +32,22 @@ export const getAllSavings = async (page = 1, limit = 10) => {
   };
 };
 
+//Edit a Savings
+export const editSavings = async (savingsId: string, amount: number) => {
+  return await SavingsModel.findByIdAndUpdate(
+    savingsId,
+    {
+      $inc: { savedAmount: amount },
+    },
+    { new: true }
+  );
+};
+
+//Make sure the user owns the savings
+export const ownsSavings = async (savingsId: string, userId: string) => {
+  return await SavingsModel.findOne({ _id: savingsId, user: userId });
+};
+
 //Delete Savings
 export const deleteSavings = async (id: string) => {
   return await SavingsModel.findByIdAndDelete(id);
@@ -53,7 +69,7 @@ export const applyDailyInterest = async () => {
     );
 
     if (daysDiff >= 1) {
-      const isFixed = saving.targetAmount && saving.endDate;
+      const isFixed = saving.targetAmount || saving.endDate;
       const rate = isFixed ? 0.044 : 0.04;
 
       const interest = saving.savedAmount * rate * daysDiff;
@@ -61,13 +77,11 @@ export const applyDailyInterest = async () => {
       saving.totalInterestAccrued += interest;
       saving.lastInterestDate = today;
 
-      // Check if target reached
+      // Check if target or end date reached
       if (
-        isFixed &&
-        typeof saving.targetAmount === "number" &&
-        saving.savedAmount >= saving.targetAmount &&
-        saving.endDate &&
-        today >= new Date(saving.endDate)
+        (typeof saving.targetAmount === "number" &&
+          saving.savedAmount >= saving.targetAmount) ||
+        (saving.endDate && today >= new Date(saving.endDate))
       ) {
         saving.status = SavingsStatus.COMPLETED;
       }

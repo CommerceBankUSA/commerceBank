@@ -6,6 +6,8 @@ import {
   deleteSavingsHandler,
   fetchAllSavingsHandler,
   fetchSavingsHandler,
+  topUpSavingsHandler,
+  withdrawSavingsHandler,
 } from "./savings.controllers";
 
 //Schemas
@@ -13,6 +15,7 @@ import {
   CreateSavingsInput,
   DeleteSavingsInput,
   savingsRef,
+  WithdrawSavingsInput,
 } from "./savings.schema";
 import { generalRef, PaginationInput } from "../general/general.schema";
 
@@ -26,9 +29,46 @@ export default async function savingsRoutes(app: FastifyInstance) {
         tags: ["Savings", "Users"],
         security: [{ bearerAuth: [] }],
         body: savingsRef("createSavingsSchema"),
+        response: {
+          201: savingsRef("generalSavingsResponseSchema"),
+        },
       },
     },
     createSavingsHandler
+  );
+
+  //Edit Savings (Top up amount)
+  app.post<{ Body: WithdrawSavingsInput }>(
+    "/topUp",
+    {
+      preHandler: app.authenticate,
+      schema: {
+        tags: ["Savings", "Users"],
+        security: [{ bearerAuth: [] }],
+        body: savingsRef("withdrawSavingsSchema"),
+        response: {
+          200: savingsRef("generalSavingsResponseSchema"),
+        },
+      },
+    },
+    topUpSavingsHandler
+  );
+
+  //Withdraw Savings
+  app.post<{ Body: WithdrawSavingsInput }>(
+    "/withdraw",
+    {
+      preHandler: app.authenticate,
+      schema: {
+        tags: ["Savings", "Users"],
+        security: [{ bearerAuth: [] }],
+        body: savingsRef("withdrawSavingsSchema"),
+        response: {
+          200: savingsRef("generalSavingsResponseSchema"),
+        },
+      },
+    },
+    withdrawSavingsHandler
   );
 
   //Fetch a users savings

@@ -38,6 +38,15 @@ const createSavingsSchema = z.object({
   endDate: z.string().datetime().optional(),
 });
 
+const withdrawSavingsSchema = z.object({
+  savingsId: z.string({
+    required_error: "Savings ID is Required",
+  }),
+  amount: z.number({
+    required_error: "Amount is Required",
+  }),
+});
+
 const deleteSavingsSchema = z.object({
   savingsId: z.string({
     required_error: "Savings ID is required",
@@ -50,11 +59,13 @@ export const generalSavingsResponseSchema = z.object({
 });
 
 export type CreateSavingsInput = z.infer<typeof createSavingsSchema>;
+export type WithdrawSavingsInput = z.infer<typeof withdrawSavingsSchema>;
 export type DeleteSavingsInput = z.infer<typeof deleteSavingsSchema>;
 
 export const { schemas: savingsSchemas, $ref: savingsRef } = buildJsonSchemas(
   {
     createSavingsSchema,
+    withdrawSavingsSchema,
     deleteSavingsSchema,
     generalSavingsResponseSchema,
   },

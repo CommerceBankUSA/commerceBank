@@ -4,7 +4,6 @@ import TransactionModel, {
   TransactionStatus,
   TransactionType,
 } from "./transaction.model";
-import loanModel, { LoanStatus } from "../loan/loan.model";
 
 //Schemas
 import { CreateTransactionInput } from "./transaction.schema";

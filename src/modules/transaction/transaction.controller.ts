@@ -73,7 +73,7 @@ export const createNewTransactionHandler = async (
   );
 
   //Create a beneficiary if it exists
-  if (request.body.beneficiary === true) {
+  if (request.body.beneficiary === true && request.body.details) {
     //Check if the beneficiary already exists
     const exists = await ownBeneficiary(
       request.body.details.fullName,
