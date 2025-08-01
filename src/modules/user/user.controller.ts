@@ -28,6 +28,7 @@ import { FILE_SIZE, SMTP_FROM_EMAIL } from "../../config";
 import welcome from "../../emails/welcome";
 import verificationEmail from "../../emails/verificationEmail";
 import fullyVerified from "../../emails/fullyVerified";
+import kyc from "../../emails/kyc";
 
 //Utils
 import { sendResponse } from "../../utils/response.utils";
@@ -550,6 +551,14 @@ export const editUserHandler = async (
 
   const updatedUser = await updateUser(request.body);
 
+  if (!updatedUser)
+    return sendResponse(
+      reply,
+      400,
+      false,
+      "Couldn't update user profile, kindly try again later"
+    );
+
   //Send an email and notification if the update contains fully verified
   if (request.body.isFullyVerified === true) {
     const verifiedTemplate = fullyVerified({ name: user.fullName });
@@ -567,6 +576,21 @@ export const editUserHandler = async (
       title: "🎉 Account is Fully Verified",
       message:
         "Congratulations! Your Commerce Bank USA account has been fully verified. You now have complete access to all our services and features — from managing your savings and checking accounts to making secure payments, transfers, and more",
+    });
+  }
+
+  const isKyc = request.body.kyc;
+  if (isKyc) {
+    const template = kyc({
+      name: updatedUser.fullName,
+      status: request.body.kyc?.status as "accepted" | "rejected",
+    });
+
+    await sendEmail({
+      from: SMTP_FROM_EMAIL,
+      to: user.email,
+      subject: template.subject,
+      html: template.html,
     });
   }
 

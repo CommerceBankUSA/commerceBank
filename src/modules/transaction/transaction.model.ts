@@ -6,7 +6,7 @@ export enum TransactionType {
 }
 
 export enum SubType {
-  WITHDRAWALS = "withdrawal",
+  WITHDRAWAL = "withdrawal",
   WIRE = "wire transfer",
   CHECK = "check",
   BILL = "bill payment",

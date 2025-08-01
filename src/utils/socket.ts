@@ -4,18 +4,24 @@ import { Server } from "socket.io";
 import { createNotification } from "../modules/notifications/notifications.services";
 import {
   updateOnlineStatus,
+  updateUser,
   updateUserSession,
 } from "../modules/user/user.service";
-
-//Utils
-import { allowedOrigins } from "./cors";
-
+import { updateAdminStatus } from "../modules/admin/admin.service";
 import {
   saveMessage,
   getAllConversations,
   markAllMessages,
 } from "../libs/message";
-import { updateAdminStatus } from "../modules/admin/admin.service";
+
+//Utils, Libs and Configs
+import { allowedOrigins } from "./cors";
+import { sendEmail } from "../libs/mailer";
+import { SMTP_FROM_EMAIL } from "../config";
+
+//Emails
+import suspensionEmail from "../emails/suspension";
+import restoredEmail from "../emails/unsuspended";
 
 let io: Server;
 const onlineUsers = new Map<string, string>();
@@ -98,14 +104,45 @@ export const initSocket = (server: any) => {
       }
     });
 
+    //Logout a user
+    socket.on("logoutUser", async (userId) => {
+      await updateUserSession(userId);
+      io.to(userId).emit("offline");
+    });
+
+    //Suspend a user
+    socket.on("suspendUser", async (userId, email, suspended) => {
+      const data = { email, isSuspended: suspended };
+      const updatedUser = await updateUser(data);
+
+      if (updatedUser !== null) {
+        const template =
+          suspended === true
+            ? suspensionEmail({ name: updatedUser.fullName }).html
+            : restoredEmail({ name: updatedUser.fullName }).html;
+
+        await sendEmail({
+          from: SMTP_FROM_EMAIL,
+          to: updatedUser.email,
+          subject:
+            suspended === true
+              ? suspensionEmail({ name: updatedUser.fullName }).subject
+              : restoredEmail({ name: updatedUser.fullName }).subject,
+          html: template,
+        });
+      }
+
+      io.to(userId).emit("suspended");
+    });
+
     // Disconnect Handler
-    socket.on("disconnect", () => {
+    socket.on("disconnect", async () => {
       const userId = [...onlineUsers.entries()].find(
         ([_, id]) => id === socket.id
       )?.[0];
       if (userId) {
         onlineUsers.delete(userId);
-        updateUserSession(userId);
+        await updateUserSession(userId);
         io.emit("userOffline", { userId });
         console.log(`User ${userId} went offline`);
       }
