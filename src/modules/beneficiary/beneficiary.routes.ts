@@ -2,15 +2,33 @@ import { FastifyInstance } from "fastify";
 
 //Handlers
 import {
+  createBeneficiaryHandler,
   deleteBeneficiaryHandler,
   getBeneficiariesHandler,
 } from "./beneficiary.controllers";
 
 //Schemas
-import { beneficiaryRef, DeleteBeneficiaryInput } from "./beneficiary.schema";
+import {
+  beneficiaryRef,
+  CreateBeneficiaryInput,
+  DeleteBeneficiaryInput,
+} from "./beneficiary.schema";
 import { generalRef } from "../general/general.schema";
 
 export default async function beneficiaryRoutes(app: FastifyInstance) {
+  // Create Beneficiaries
+  app.post<{ Body: CreateBeneficiaryInput }>(
+    "/create",
+    {
+      preHandler: app.authenticate,
+      schema: {
+        tags: ["Beneficiaries", "Users"],
+        security: [{ bearerAuth: [] }],
+      },
+    },
+    createBeneficiaryHandler
+  );
+
   //Fetch beneficiaries
   app.get(
     "/getBeneficiaries",

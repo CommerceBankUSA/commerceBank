@@ -5,9 +5,6 @@ import { buildJsonSchemas } from "fastify-zod";
 import { responseCore } from "../general/general.schema";
 
 const beneficiaryCore = {
-  user: z.string({
-    required_error: "User is required",
-  }),
   fullName: z.string().min(1, "Full name is required"),
   accountNumber: z
     .string()
@@ -26,11 +23,14 @@ const deleteBeneficiarySchema = z.object({
 
 const generalBeneficiaryResponseSchema = z.object({
   ...responseCore,
-  data: z.object({
-    ...beneficiaryCore,
-    _id: z.string(),
-    createdAt: z.string().datetime(),
-  }),
+  data: z.array(
+    z.object({
+      ...beneficiaryCore,
+      _id: z.string(),
+      user: z.string(),
+      createdAt: z.string().datetime(),
+    })
+  ),
 });
 
 const fetchBeneficiaryResponseSchema = z.object({
