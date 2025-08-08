@@ -24,6 +24,7 @@ import { activitySchemas } from "./modules/activity/activity.schema";
 import { loanSchemas } from "./modules/loan/loan.schema";
 import { beneficiarySchemas } from "./modules/beneficiary/beneficiary.schema";
 import { savingsSchemas } from "./modules/savings/savings.schema";
+import { accountSchemas } from "./modules/accounts/account.schema";
 
 // Routes
 import userRoutes from "./modules/user/user.route";
@@ -36,6 +37,7 @@ import activityRoutes from "./modules/activity/activity.routes";
 import loanRoutes from "./modules/loan/loan.routes";
 import beneficiaryRoutes from "./modules/beneficiary/beneficiary.routes";
 import savingsRoutes from "./modules/savings/savings.routes";
+import accountRoutes from "./modules/accounts/account.routes";
 
 //  Utils
 import { sendResponse } from "./utils/response.utils";
@@ -158,6 +160,7 @@ export const buildApp = async (): Promise<FastifyInstance> => {
     ...loanSchemas,
     ...beneficiarySchemas,
     ...savingsSchemas,
+    ...accountSchemas,
   ]) {
     app.addSchema(schema);
   }
@@ -172,6 +175,7 @@ export const buildApp = async (): Promise<FastifyInstance> => {
   app.register(loanRoutes, { prefix: "/v1/api/loans" });
   app.register(beneficiaryRoutes, { prefix: "/v1/api/beneficiary" });
   app.register(savingsRoutes, { prefix: "/v1/api/savings" });
+  app.register(accountRoutes, { prefix: "/v1/api/accounts" });
 
   // Register cron jobs
   await registerSavingsCron(app);
