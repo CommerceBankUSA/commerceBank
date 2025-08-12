@@ -69,7 +69,7 @@ const transactionSchema: Schema = new Schema<TransactionDocument>({
   amount: { type: Number, required: true },
   details: {
     accountNumber: { type: String },
-    recipient: { type: Schema.Types.ObjectId, ref: "Account" },
+    recipient: { type: Schema.Types.ObjectId, ref: "Account", required: false },
     fullName: { type: String },
     bankName: { type: String },
     otherDetails: { type: String },

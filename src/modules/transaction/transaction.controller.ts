@@ -98,50 +98,6 @@ export const createNewTransactionHandler = async (
     }
   }
 
-  // Handle mirrored credit transaction if recipient is present and different from sender
-  const recipientId = request.body.details?.recipient;
-  let recipientTransaction = null;
-
-  if (recipientId && recipientId !== userId) {
-    const recipientUser = await findUserById(recipientId);
-    if (recipientUser) {
-      const recipientBalance = await getUserBalance(recipientId);
-      const transactionId = generateTransactionHash();
-
-      const data = {
-        transactionType: "credit" as TransactionType,
-        subType: request.body.subType || SubType.TRANSFER,
-        description: `Transfer from ${user.fullName}`,
-        amount: request.body.amount,
-        details: {
-          accountNumber: request.body.details?.accountNumber || "",
-          recipient: recipientId,
-          fullName: user.fullName,
-          bankName: "Internal Bank",
-          otherDetails: "Internal Transfer",
-          balanceAfterTransaction: recipientBalance + request.body.amount,
-        },
-        status: "successful",
-        createdAt: new Date().toDateString(),
-      };
-
-      recipientTransaction = await createNewTransaction(
-        recipientId,
-        data,
-        transactionId
-      );
-
-      // Optionally notify the recipient
-      await emitAndSaveNotification({
-        user: recipientId,
-        type: "transaction",
-        subtype: "Credit",
-        title: "Account Credited",
-        message: `$${request.body.amount.toLocaleString()} was credited to your account from ${user.fullName}.`,
-      });
-    }
-  }
-
   const balance = await getUserBalance(userId);
 
   await emitAndSaveNotification({
@@ -179,10 +135,7 @@ export const createNewTransactionHandler = async (
     201,
     true,
     "Your transaction was created successfully.",
-    {
-      transaction: newTransaction,
-      recipientTransaction,
-    }
+    newTransaction
   );
 };
 
