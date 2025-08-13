@@ -139,12 +139,17 @@ export const deleteTransaction = async (id: string) => {
 };
 
 //Get a users balance
-export const getUserBalance = async (userId: string) => {
+export const getUserBalance = async (userId: string, includePending = true) => {
   const objectId = new mongoose.Types.ObjectId(userId);
 
-  // Get all successful transactions for this user
+  // Decide which statuses to include
+  const allowedStatuses = includePending
+    ? [TransactionStatus.SUCCESSFUL, TransactionStatus.PENDING]
+    : [TransactionStatus.SUCCESSFUL];
+
+  // Get matching transactions
   const transactions = await TransactionModel.find({
-    status: TransactionStatus.SUCCESSFUL,
+    status: { $in: allowedStatuses },
     user: objectId,
   });
 
