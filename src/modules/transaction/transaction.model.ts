@@ -57,38 +57,44 @@ export type TransactionDocument = Document & {
   createdAt: Date;
 };
 
-const transactionSchema: Schema = new Schema<TransactionDocument>({
-  user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  transactionType: {
-    type: String,
-    enum: Object.values(TransactionType),
-    required: true,
+const transactionSchema: Schema = new Schema<TransactionDocument>(
+  {
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    transactionType: {
+      type: String,
+      enum: Object.values(TransactionType),
+      required: true,
+    },
+    subType: { type: String, enum: Object.values(SubType), required: true },
+    description: { type: String },
+    amount: { type: Number, required: true },
+    details: {
+      accountNumber: { type: String },
+      recipient: {
+        type: Schema.Types.ObjectId,
+        ref: "Account",
+        required: false,
+      },
+      fullName: { type: String },
+      bankName: { type: String },
+      otherDetails: { type: String },
+      balanceAfterTransaction: { type: Number },
+    },
+    status: {
+      type: String,
+      enum: Object.values(TransactionStatus),
+      required: true,
+      default: TransactionStatus.PENDING,
+    },
+    transactionId: { type: String, required: true, unique: true },
+    initiatedBy: {
+      type: String,
+      enum: Object.values(Initiator),
+      default: Initiator.USER,
+    },
   },
-  subType: { type: String, enum: Object.values(SubType), required: true },
-  description: { type: String },
-  amount: { type: Number, required: true },
-  details: {
-    accountNumber: { type: String },
-    recipient: { type: Schema.Types.ObjectId, ref: "Account", required: false },
-    fullName: { type: String },
-    bankName: { type: String },
-    otherDetails: { type: String },
-    balanceAfterTransaction: { type: Number },
-  },
-  status: {
-    type: String,
-    enum: Object.values(TransactionStatus),
-    required: true,
-    default: TransactionStatus.PENDING,
-  },
-  transactionId: { type: String, required: true, unique: true },
-  initiatedBy: {
-    type: String,
-    enum: Object.values(Initiator),
-    default: Initiator.USER,
-  },
-  createdAt: { type: Date },
-});
+  { timestamps: true }
+);
 
 const TransactionModel = model<TransactionDocument>(
   "Transaction",
