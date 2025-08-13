@@ -15,12 +15,26 @@ export function omit<T extends object, K extends keyof T>(
   return newObj as Omit<T, K>;
 }
 
-//Date and time
+//Date and Time
 export function formatDate(date: Date | string) {
   const d = new Date(date);
 
-  // Day with suffix
-  const day = d.getDate();
+  // Use Intl for fixed time zone formatting
+  const options: Intl.DateTimeFormatOptions = {
+    timeZone: "America/New_York", // Fixed NY time
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    timeZoneName: "short", // Adds EST/EDT
+  };
+
+  const formatter = new Intl.DateTimeFormat("en-US", options);
+  const parts = formatter.formatToParts(d);
+
+  // Extract day and add suffix
+  const day = Number(parts.find((p) => p.type === "day")?.value);
   const suffix =
     day % 10 === 1 && day !== 11
       ? "st"
@@ -30,14 +44,19 @@ export function formatDate(date: Date | string) {
           ? "rd"
           : "th";
 
-  // Month name
-  const month = d.toLocaleString("en-US", { month: "long" });
+  // Build string manually to preserve suffix
+  return parts
+    .map((p) => {
+      if (p.type === "day") return `${day}${suffix}`;
+      return p.value;
+    })
+    .join("");
+}
 
-  // Hours and minutes in 12-hour format
-  let hours = d.getHours();
-  const minutes = d.getMinutes().toString().padStart(2, "0");
-  const ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12 || 12; // convert 0 → 12
-
-  return `${day}${suffix} ${month}, ${hours}:${minutes}${ampm}`;
+//Name
+export function capitalizeWords(str: string) {
+  return str
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
 }

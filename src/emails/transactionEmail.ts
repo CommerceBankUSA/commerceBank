@@ -106,13 +106,13 @@ export default ({
       </div>
     </div>
     <div class="footer">
-      <p><span class="footerSpan">Your Bank</span> — Reliable & Secure</p>
+      <p><span class="footerSpan">Commerce Bank USA</span> — Reliable & Secure</p>
       <p>
         <a href="https://play.google.com">Google Play</a> |
         <a href="https://apps.apple.com">App Store</a>
       </p>
       <p>
-       <span>Questions? Contact <a href="mailto:support@yourbank.com">support@yourbank.com</a></span><br />
+       <span>Questions? Contact <a href="mailto:support@commercebankusa.com">support@commercebankusa.com</a></span><br />
        <span>Follow us on Twitter, Facebook, and Instagram</span>
       </p>
       <p class="footerCopy">&copy; ${new Date().getFullYear()} Your Bank. All rights reserved.</p>

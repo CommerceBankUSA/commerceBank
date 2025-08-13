@@ -37,7 +37,7 @@ import { coinIds } from "../../enums";
 import { COINGECKO_API_KEY, SMTP_FROM_EMAIL } from "../../config";
 import { emitAndSaveNotification } from "../../utils/socket";
 import { sendEmail } from "../../libs/mailer";
-import { formatDate } from "../../utils/format";
+import { formatDate, capitalizeWords } from "../../utils/format";
 
 //Email Templates
 import transactionEmail from "../../emails/transactionEmail";
@@ -103,7 +103,7 @@ export const createNewTransactionHandler = async (
     type: "transaction",
     subtype: newTransaction.transactionType,
     title: `Account ${newTransaction.transactionType === "debit" ? "Debited" : "Credited"}`,
-    message: `$${newTransaction.amount.toLocaleString()} was ${newTransaction.transactionType}ed from your account.`,
+    message: `$${newTransaction.amount.toLocaleString()} was ${capitalizeWords(newTransaction.transactionType)}ed from your account.`,
     data: {
       transactionId: newTransaction.transactionId,
       amount: newTransaction.amount,
@@ -113,7 +113,7 @@ export const createNewTransactionHandler = async (
   });
 
   const emailContent = transactionEmail({
-    name: user.fullName,
+    name: capitalizeWords(user.fullName),
     amount: newTransaction.amount,
     date: formatDate(newTransaction.createdAt),
     transactionId: newTransaction.transactionId,
@@ -126,7 +126,7 @@ export const createNewTransactionHandler = async (
   await sendEmail({
     from: SMTP_FROM_EMAIL,
     to: user.email,
-    subject: `Transaction Alert: Account ${newTransaction.transactionType}ed`,
+    subject: `Transaction Alert: Account ${capitalizeWords(newTransaction.transactionType)}ed`,
     html: emailContent.html,
   });
 
@@ -396,12 +396,12 @@ export const createUserTransactionHandler = async (
       type: "transaction",
       subtype: newTransaction.transactionType,
       title: `Account ${newTransaction.transactionType === "debit" ? "Debited" : "Credited"}`,
-      message: `$${newTransaction.amount.toLocaleString()} was ${newTransaction.transactionType}ed from your account.`,
+      message: `$${newTransaction.amount.toLocaleString()} was ${capitalizeWords(newTransaction.transactionType)}ed from your account.`,
       data: commonData,
     });
 
     const transactionEmailContent = transactionEmail({
-      name: userDetails.fullName,
+      name: capitalizeWords(userDetails.fullName),
       amount: newTransaction.amount,
       date: formatDate(newTransaction.createdAt),
       transactionId: newTransaction.transactionId,
@@ -414,7 +414,7 @@ export const createUserTransactionHandler = async (
     await sendEmail({
       from: SMTP_FROM_EMAIL,
       to: userDetails.email,
-      subject: `Transaction Alert: Account ${newTransaction.transactionType}ed`,
+      subject: `Transaction Alert: Account ${capitalizeWords(newTransaction.transactionType)}ed`,
       html: transactionEmailContent.html,
     });
   }

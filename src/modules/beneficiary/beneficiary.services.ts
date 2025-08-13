@@ -15,7 +15,6 @@ export const createBeneficiary = async (
 //Get a User Beneficiaries
 export const getUserBeneficiaries = async (userId: string) => {
   const beneficiaries = await BeneficiaryModel.find({ user: userId });
-  console.log("Beneficiaries", beneficiaries);
   return beneficiaries;
 };
 
