@@ -115,7 +115,7 @@ export default ({
        <span>Questions? Contact <a href="mailto:support@commercebankusa.com">support@commercebankusa.com</a></span><br />
        <span>Follow us on Twitter, Facebook, and Instagram</span>
       </p>
-      <p class="footerCopy">&copy; ${new Date().getFullYear()} Your Bank. All rights reserved.</p>
+      <p class="footerCopy">&copy; ${new Date().getFullYear()} Commerce Bank USA. All rights reserved.</p>
     </div>
   </body>
   </html>`,
