@@ -5,6 +5,8 @@ export default ({
   transactionId,
   description,
   balance,
+  type,
+  subType,
 }: {
   name: string;
   amount: number;
@@ -12,6 +14,8 @@ export default ({
   transactionId: string;
   description: string;
   balance: number;
+  type: string;
+  subType: string;
 }) => ({
   html: `<!DOCTYPE html>
   <html lang="en">
@@ -92,9 +96,9 @@ export default ({
         <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1753090598/logo_oicitz.png" alt="Bank Logo">
       </div>
       <div class="content">
-        <h1>Deposit Received</h1>
+        <h1>${type} Alert</h1>
         <p>Hi ${name},</p>
-        <p>Your account has been credited with <span class="highlight">₦${amount.toLocaleString()}</span> on <strong>${date}</strong>.</p>
+        <p>Your account has been ${type}ed with <span class="highlight">$${amount.toLocaleString()}</span> via ${subType} on <strong>${date}</strong>.</p>
         <p>Description: <em>${description || "N/A"}</em></p>
         <p>Transaction ID: <strong>${transactionId}</strong></p>
         <p>Your new balance is <span class="highlight">₦${balance.toLocaleString()}</span>.</p>

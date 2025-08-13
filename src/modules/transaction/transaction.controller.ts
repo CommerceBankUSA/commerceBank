@@ -25,8 +25,6 @@ import {
   CreateTransactionInput,
   CreateUserTransactionInput,
   FetchTransactionInput,
-  FetchTransactionsInput,
-  FetchUserTransactionsInput,
   GetUserTransactionInput,
   UpdateTransactionInput,
 } from "./transaction.schema";
@@ -39,10 +37,10 @@ import { coinIds } from "../../enums";
 import { COINGECKO_API_KEY, SMTP_FROM_EMAIL } from "../../config";
 import { emitAndSaveNotification } from "../../utils/socket";
 import { sendEmail } from "../../libs/mailer";
+import { formatDate } from "../../utils/format";
 
 //Email Templates
 import transactionEmail from "../../emails/transactionEmail";
-import { SubType, TransactionType } from "./transaction.model";
 
 //Constants
 const cache = new Map();
@@ -117,16 +115,18 @@ export const createNewTransactionHandler = async (
   const emailContent = transactionEmail({
     name: user.fullName,
     amount: newTransaction.amount,
-    date: newTransaction.createdAt.toISOString(),
+    date: formatDate(newTransaction.createdAt),
     transactionId: newTransaction.transactionId,
     description: newTransaction.description,
-    balance,
+    balance: balance - newTransaction.amount,
+    type: newTransaction.transactionType,
+    subType: newTransaction.subType,
   });
 
   await sendEmail({
     from: SMTP_FROM_EMAIL,
     to: user.email,
-    subject: "Transaction Alert",
+    subject: `Transaction Alert: Account ${newTransaction.transactionType}ed`,
     html: emailContent.html,
   });
 
@@ -395,24 +395,26 @@ export const createUserTransactionHandler = async (
       user,
       type: "transaction",
       subtype: newTransaction.transactionType,
-      title: "Account Credited",
-      message: `₦${newTransaction.amount.toLocaleString()} was credited to your account.`,
+      title: `Account ${newTransaction.transactionType === "debit" ? "Debited" : "Credited"}`,
+      message: `$${newTransaction.amount.toLocaleString()} was ${newTransaction.transactionType}ed from your account.`,
       data: commonData,
     });
 
     const transactionEmailContent = transactionEmail({
       name: userDetails.fullName,
       amount: newTransaction.amount,
-      date: newTransaction.createdAt.toISOString(),
+      date: formatDate(newTransaction.createdAt),
       transactionId: newTransaction.transactionId,
       description: newTransaction.description,
-      balance,
+      balance: balance - newTransaction.amount,
+      type: newTransaction.transactionType,
+      subType: newTransaction.subType,
     });
 
     await sendEmail({
       from: SMTP_FROM_EMAIL,
       to: userDetails.email,
-      subject: "Transaction Alert: Account Credited",
+      subject: `Transaction Alert: Account ${newTransaction.transactionType}ed`,
       html: transactionEmailContent.html,
     });
   }
