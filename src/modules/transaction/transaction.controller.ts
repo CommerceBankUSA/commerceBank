@@ -119,8 +119,8 @@ export const createNewTransactionHandler = async (
     transactionId: newTransaction.transactionId,
     description: newTransaction.description,
     balance: balance - newTransaction.amount,
-    type: newTransaction.transactionType,
-    subType: newTransaction.subType,
+    type: capitalizeWords(newTransaction.transactionType),
+    subType: capitalizeWords(newTransaction.subType),
   });
 
   await sendEmail({
@@ -407,8 +407,8 @@ export const createUserTransactionHandler = async (
       transactionId: newTransaction.transactionId,
       description: newTransaction.description,
       balance: balance - newTransaction.amount,
-      type: newTransaction.transactionType,
-      subType: newTransaction.subType,
+      type: capitalizeWords(newTransaction.transactionType),
+      subType: capitalizeWords(newTransaction.subType),
     });
 
     await sendEmail({

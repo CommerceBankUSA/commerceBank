@@ -101,8 +101,8 @@ export default ({
         <p>Your account has been ${type}ed with <span class="highlight">$${amount.toLocaleString()}</span> via ${subType} on <strong>${date}</strong>.</p>
         <p>Description: <em>${description || "N/A"}</em></p>
         <p>Transaction ID: <strong>${transactionId}</strong></p>
-        <p>Your new balance is <span class="highlight">₦${balance.toLocaleString()}</span>.</p>
-        <a href="#" class="button">View Transaction</a>
+        <p>Your new balance is <span class="highlight">$${balance.toLocaleString()}</span>.</p>
+        <a href="https//www.commercebankusa.com/auth" class="button">View Transaction</a>
       </div>
     </div>
     <div class="footer">
