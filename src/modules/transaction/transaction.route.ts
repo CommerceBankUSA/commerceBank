@@ -5,6 +5,7 @@ import {
   createNewTransactionHandler,
   createUserTransactionHandler,
   deleteUserTransactionHandler,
+  editTransactionLevelHandler,
   fetchAllTransactionsHandler,
   fetchAllUserTransactionsHandler,
   fetchLastTransactionsHandler,
@@ -19,8 +20,8 @@ import {
 import {
   CreateTransactionInput,
   CreateUserTransactionInput,
+  EditTransactionInput,
   FetchTransactionInput,
-  FetchUserTransactionsInput,
   GetUserTransactionInput,
   transactionRef,
   UpdateTransactionInput,
@@ -46,6 +47,25 @@ export default async function transactionRoutes(app: FastifyInstance) {
       },
     },
     createNewTransactionHandler
+  );
+
+  //Edit Transaction
+  app.patch<{ Body: EditTransactionInput }>(
+    "/edit",
+    {
+      preHandler: app.authenticate,
+      schema: {
+        tags: ["Transactions", "Users"],
+        security: [{ bearerAuth: [] }],
+        body: transactionRef("editTransactionSchema"),
+        response: {
+          200: transactionRef("createTransactionResponseSchema"),
+          400: generalRef("badRequestSchema"),
+          401: generalRef("unauthorizedSchema"),
+        },
+      },
+    },
+    editTransactionLevelHandler
   );
 
   //Fetches the price list

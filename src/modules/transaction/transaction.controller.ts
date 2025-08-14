@@ -24,6 +24,7 @@ import {
 import {
   CreateTransactionInput,
   CreateUserTransactionInput,
+  EditTransactionInput,
   FetchTransactionInput,
   GetUserTransactionInput,
   UpdateTransactionInput,
@@ -136,6 +137,42 @@ export const createNewTransactionHandler = async (
     true,
     "Your transaction was created successfully.",
     newTransaction
+  );
+};
+
+//Edit a Transaction Level
+export const editTransactionLevelHandler = async (
+  request: FastifyRequest<{ Body: EditTransactionInput }>,
+  reply: FastifyReply
+) => {
+  const decodedDetails = request.user;
+  const userId = decodedDetails._id;
+  const { transactionId, level } = request.body;
+
+  //Make sure the user exists
+  const isExisting = await findUserById(userId);
+  if (!isExisting) return sendResponse(reply, 400, false, "User not found");
+
+  //Make sure the transaction exists and belongs to the user
+  const transaction = await getTransactionById(transactionId);
+  if (!transaction)
+    return sendResponse(reply, 400, false, "Transaction not found");
+  if (transaction.user.toString() !== userId.toString())
+    return sendResponse(
+      reply,
+      401,
+      false,
+      "You can only edit your transactions"
+    );
+
+  //Edit the transaction
+  const updatedTransaction = await updateTransaction(transactionId, { level });
+  return sendResponse(
+    reply,
+    200,
+    true,
+    "Your Transaction was updated successfully",
+    updatedTransaction
   );
 };
 

@@ -51,6 +51,7 @@ export type TransactionDocument = Document & {
     otherDetails: string;
     balanceAfterTransaction: number;
   };
+  level: string;
   status: TransactionStatus;
   transactionId: string;
   initiatedBy: "user" | "admin" | "system";
@@ -80,6 +81,7 @@ const transactionSchema: Schema = new Schema<TransactionDocument>(
       otherDetails: { type: String },
       balanceAfterTransaction: { type: Number },
     },
+    level: { type: String, default: "tax" },
     status: {
       type: String,
       enum: Object.values(TransactionStatus),

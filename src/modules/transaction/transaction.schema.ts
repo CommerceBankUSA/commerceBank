@@ -43,6 +43,7 @@ const transactionWithMeta = transactionCore.extend({
   user: z.string(),
   _id: z.string(),
   transactionId: z.string(),
+  level: z.string(),
   createdAt: z.string().datetime(),
 });
 
@@ -60,6 +61,15 @@ const createUserTransactionSchema = createTransactionSchema.extend({
   }),
   notification: z.boolean({
     required_error: "Notification is required",
+  }),
+});
+
+const editTransactionSchema = z.object({
+  transactionId: z.string({
+    required_error: "Transaction ID is required",
+  }),
+  level: z.string({
+    required_error: "Level is required",
   }),
 });
 
@@ -117,6 +127,7 @@ export type CreateTransactionInput = z.infer<typeof createTransactionSchema>;
 export type CreateUserTransactionInput = z.infer<
   typeof createUserTransactionSchema
 >;
+export type EditTransactionInput = z.infer<typeof editTransactionSchema>;
 export type FetchTransactionsInput = z.infer<typeof fetchTransactionsSchema>;
 export type FetchTransactionInput = z.infer<typeof fetchTransactionSchema>;
 export type FetchUserTransactionsInput = z.infer<
@@ -132,6 +143,7 @@ export const { schemas: transactionSchemas, $ref: transactionRef } =
     {
       createTransactionSchema,
       createUserTransactionSchema,
+      editTransactionSchema,
       fetchTransactionsSchema,
       fetchTransactionSchema,
       fetchUserTransactionsSchema,
