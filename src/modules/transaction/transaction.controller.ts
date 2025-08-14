@@ -316,7 +316,8 @@ export const fetchTransactionHandler = async (
     reply,
     200,
     true,
-    "Transaction Details was fetched successfully."
+    "Transaction Details was fetched successfully.",
+    transaction
   );
 };
 
