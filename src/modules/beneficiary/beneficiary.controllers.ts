@@ -64,6 +64,7 @@ export const getBeneficiariesHandler = async (
   return sendResponse(reply, 200, true, "User beneficiaries", beneficiaries);
 };
 
+//Delete Beneficiary
 export const deleteBeneficiaryHandler = async (
   request: FastifyRequest<{ Params: DeleteBeneficiaryInput }>,
   reply: FastifyReply

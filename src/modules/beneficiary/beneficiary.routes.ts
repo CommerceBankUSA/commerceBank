@@ -47,7 +47,7 @@ export default async function beneficiaryRoutes(app: FastifyInstance) {
 
   //Delete beneficiary
   app.delete<{ Params: DeleteBeneficiaryInput }>(
-    "/delete",
+    "/delete/:id",
     {
       preHandler: app.authenticate,
       schema: {
