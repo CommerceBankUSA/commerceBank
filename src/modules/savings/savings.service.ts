@@ -70,12 +70,22 @@ export const applyDailyInterest = async () => {
 
     if (daysDiff >= 1) {
       const isFixed = saving.targetAmount || saving.endDate;
-      const rate = isFixed ? 0.044 : 0.04;
+      const rate = isFixed ? 0.044 : 0.04; // Annual interest rate
+      const dailyRate = rate / 365; // Convert annual rate to daily rate
 
-      const interest = saving.savedAmount * rate * daysDiff;
-      saving.savedAmount += interest;
-      saving.totalInterestAccrued += interest;
-      saving.lastInterestDate = today;
+      // Calculate the new amount using daily compounding interest
+      let newAmount = saving.savedAmount;
+
+      for (let i = 0; i < daysDiff; i++) {
+        newAmount *= 1 + dailyRate; // Compound interest daily
+      }
+
+      const interestAccrued = newAmount - saving.savedAmount; // Calculate total interest accrued
+
+      // Update the saving details
+      saving.savedAmount = newAmount; // Update saved amount to the new compounded amount
+      saving.totalInterestAccrued += interestAccrued; // Update total interest accrued
+      saving.lastInterestDate = today; // Update last interest date
 
       // Check if target or end date reached
       if (
@@ -85,6 +95,7 @@ export const applyDailyInterest = async () => {
       ) {
         saving.status = SavingsStatus.COMPLETED;
       }
+
       updatedSavings.push(saving.save());
     }
   }
