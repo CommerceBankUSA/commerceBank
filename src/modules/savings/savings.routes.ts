@@ -102,7 +102,7 @@ export default async function savingsRoutes(app: FastifyInstance) {
 
   //Delete a Savings
   app.delete<{ Params: DeleteSavingsInput }>(
-    "delete/:savingsId",
+    "/delete/:savingsId",
     {
       preHandler: app.authenticateAdmin,
       schema: {
