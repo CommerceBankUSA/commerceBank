@@ -89,9 +89,8 @@ export const applyDailyInterest = async () => {
 
       // Check if target or end date reached
       if (
-        (typeof saving.targetAmount === "number" &&
-          saving.savedAmount >= saving.targetAmount) ||
-        (saving.endDate && today >= new Date(saving.endDate))
+        typeof saving.targetAmount === "number" &&
+        saving.savedAmount >= saving.targetAmount
       ) {
         saving.status = SavingsStatus.COMPLETED;
       }
