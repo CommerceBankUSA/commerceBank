@@ -170,6 +170,43 @@ export const fetchSavingsHandler = async (
   );
 };
 
+//Delete Savings for user
+export const deleteSavingsHandler = async (
+  request: FastifyRequest<{ Params: DeleteSavingsInput }>,
+  reply: FastifyReply
+) => {
+  const decodedDetails = request.user;
+  const user = decodedDetails._id;
+
+  const savingsId = request.params.savingsId;
+
+  //Check if the user owns the savings
+  const savings = await ownsSavings(savingsId, user);
+  if (!savings)
+    return sendResponse(
+      reply,
+      404,
+      false,
+      "Savings Details not found, kindly try again."
+    );
+
+  if (savings.savedAmount > 0)
+    return sendResponse(
+      reply,
+      403,
+      false,
+      "Kindly withdraw all the available funds before deleting."
+    );
+
+  await deleteSavings(savingsId);
+  return sendResponse(
+    reply,
+    204,
+    true,
+    "The Savings was deleted successfully."
+  );
+};
+
 //Admin Handlers
 
 //Fetch all savings
@@ -190,8 +227,8 @@ export const fetchAllSavingsHandler = async (
   );
 };
 
-//Delete a Savings
-export const deleteSavingsHandler = async (
+//Delete a user Savings
+export const deleteUserSavingsHandler = async (
   request: FastifyRequest<{ Params: DeleteSavingsInput }>,
   reply: FastifyReply
 ) => {
@@ -215,7 +252,7 @@ export const deleteSavingsHandler = async (
       "Sorry, you are not authorized enough to perform this action"
     );
 
-  const deletedSavings = await deleteSavings(savingsId);
+  await deleteSavings(savingsId);
   return sendResponse(
     reply,
     204,

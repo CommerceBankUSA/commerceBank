@@ -4,6 +4,7 @@ import { FastifyInstance } from "fastify/types/instance";
 import {
   createSavingsHandler,
   deleteSavingsHandler,
+  deleteUserSavingsHandler,
   fetchAllSavingsHandler,
   fetchSavingsHandler,
   topUpSavingsHandler,
@@ -81,6 +82,20 @@ export default async function savingsRoutes(app: FastifyInstance) {
     fetchSavingsHandler
   );
 
+  //Delete a users savings
+  app.delete<{ Params: DeleteSavingsInput }>(
+    "/deleteSavings/:savingsId",
+    {
+      preHandler: app.authenticate,
+      schema: {
+        tags: ["Savings", "Users"],
+        security: [{ bearerAuth: [] }],
+        params: savingsRef("deleteSavingsSchema"),
+      },
+    },
+    deleteSavingsHandler
+  );
+
   //Admin Routes
 
   //Get all Savings
@@ -89,7 +104,7 @@ export default async function savingsRoutes(app: FastifyInstance) {
     {
       preHandler: app.authenticateAdmin,
       schema: {
-        tags: ["Savings", "Users"],
+        tags: ["Savings", "Admins"],
         security: [{ bearerAuth: [] }],
         querystring: generalRef("paginationSchema"),
       },
@@ -103,11 +118,11 @@ export default async function savingsRoutes(app: FastifyInstance) {
     {
       preHandler: app.authenticateAdmin,
       schema: {
-        tags: ["Savings", "Users"],
+        tags: ["Savings", "Admin"],
         security: [{ bearerAuth: [] }],
         params: savingsRef("deleteSavingsSchema"),
       },
     },
-    deleteSavingsHandler
+    deleteUserSavingsHandler
   );
 }
