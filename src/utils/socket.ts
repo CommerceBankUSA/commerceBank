@@ -1,7 +1,10 @@
 import { Server } from "socket.io";
 
 //Services
-import { createNotification } from "../modules/notifications/notifications.services";
+import {
+  createNotification,
+  getUserNotifications,
+} from "../modules/notifications/notifications.services";
 import {
   updateOnlineStatus,
   updateUser,
@@ -49,6 +52,9 @@ export const initSocket = (server: any) => {
       if (userId) {
         socket.join(userId);
         onlineUsers.set(userId, socket.id);
+
+        const userNotifications = await getUserNotifications(userId);
+        io.to(userId).emit("allNotifications", userNotifications);
 
         //If it is an admin, update status as true
         if (isAdmin) {
