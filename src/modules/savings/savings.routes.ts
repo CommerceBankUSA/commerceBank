@@ -63,9 +63,6 @@ export default async function savingsRoutes(app: FastifyInstance) {
         tags: ["Savings", "Users"],
         security: [{ bearerAuth: [] }],
         body: savingsRef("withdrawSavingsSchema"),
-        response: {
-          200: savingsRef("generalSavingsResponseSchema"),
-        },
       },
     },
     withdrawSavingsHandler
