@@ -152,7 +152,10 @@ export const deleteTransaction = async (id: string) => {
 };
 
 //Get a users balance
-export const getUserBalance = async (userId: string, includePending = true) => {
+export const getUserBalance = async (
+  userId: string,
+  includePending = false
+) => {
   const objectId = new mongoose.Types.ObjectId(userId);
 
   // Decide which statuses to include
