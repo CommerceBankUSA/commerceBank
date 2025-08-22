@@ -14,11 +14,24 @@ export const createNewTransaction = async (
   input: CreateTransactionInput,
   transactionId: string
 ) => {
-  const newTransaction = await TransactionModel.create({
+  const transactionData: any = {
     ...input,
     user,
     transactionId,
-  });
+  };
+
+  if (
+    transactionData.details?.recipient &&
+    mongoose.Types.ObjectId.isValid(transactionData.details.recipient)
+  ) {
+    transactionData.details.recipient = new mongoose.Types.ObjectId(
+      transactionData.details.recipient
+    );
+  } else {
+    transactionData.details.recipient = null;
+  }
+
+  const newTransaction = await TransactionModel.create(transactionData);
   return newTransaction;
 };
 

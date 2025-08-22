@@ -130,7 +130,7 @@ export const loanApplicationHandler = async (
 
   await emitAndSaveNotification({
     user: decodedDetails._id,
-    type: "loan",
+    type: "transaction",
     subtype: "application",
     title: "Loan Application Submitted",
     message: `Your loan request of $${principal.toLocaleString()} has been submitted and is currently under review.`,

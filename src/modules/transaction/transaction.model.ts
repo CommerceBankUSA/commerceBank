@@ -75,6 +75,7 @@ const transactionSchema: Schema = new Schema<TransactionDocument>(
         type: Schema.Types.ObjectId,
         ref: "Account",
         required: false,
+        default: null,
       },
       fullName: { type: String },
       bankName: { type: String },
