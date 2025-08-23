@@ -34,6 +34,7 @@ export const setupSwagger = async (app: FastifyInstance) => {
         },
         { name: "Savings", description: "Savings-related endpoints" },
         { name: "Accounts", description: "Account-related endpoints" },
+        { name: "Deposits", description: "Deposit Requests-related endpoints" },
       ],
       components: {
         securitySchemes: {
