@@ -87,31 +87,6 @@ export const editDepositRequestHandler = async (
   if (!editedRequest)
     return sendResponse(reply, 404, false, "Deposit Request Not Found");
 
-  //Create a new transaction document and remove the amount from the deposit request
-  const transactionId = generateTransactionHash();
-
-  const data = {
-    amount: editedRequest.amount,
-    transactionType: TransactionType.CREDIT,
-    subType: SubType.DEPOSIT,
-    status: "successful",
-  };
-  const newWithdrawal = await createNewTransaction(user, data, transactionId);
-
-  //Send Notification
-  await emitAndSaveNotification({
-    user,
-    type: "transaction",
-    subtype: TransactionType.CREDIT,
-    title: `Deposit`,
-    message: `$${editedRequest.amount.toLocaleString()} was deposited to your account successfully.`,
-    data: {
-      transactionId: newWithdrawal.transactionId,
-      amount: editedRequest.amount,
-      date: newWithdrawal.createdAt,
-    },
-  });
-
   //Return successful response
   return sendResponse(
     reply,
@@ -154,6 +129,38 @@ export const approveDepositRequestHandler = async (
 
   //Edit deposit request
   const editedRequest = await editDepositRequest(id, updateData);
+
+  if (editedRequest && editedRequest.status === "successful") {
+    //Create a new transaction
+    const transactionId = generateTransactionHash();
+
+    const data = {
+      amount: editedRequest.amount,
+      transactionType: TransactionType.CREDIT,
+      subType: SubType.DEPOSIT,
+      status: "successful",
+    };
+    const newWithdrawal = await createNewTransaction(
+      editedRequest.user.toString(),
+      data,
+      transactionId
+    );
+
+    //Send Notification
+    await emitAndSaveNotification({
+      user: editedRequest.user.toString(),
+      type: "transaction",
+      subtype: TransactionType.CREDIT,
+      title: `Deposit`,
+      message: `$${editedRequest.amount.toLocaleString()} was deposited to your account successfully.`,
+      data: {
+        transactionId: newWithdrawal.transactionId,
+        amount: editedRequest.amount,
+        date: newWithdrawal.createdAt,
+      },
+    });
+  }
+
   return sendResponse(
     reply,
     200,
