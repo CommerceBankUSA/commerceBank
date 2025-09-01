@@ -59,7 +59,8 @@ export const getDepositRequestHandler = async (
     reply,
     200,
     true,
-    "Your deposit requests were fetched successfully."
+    "Your deposit requests were fetched successfully.",
+    requests
   );
 };
 
