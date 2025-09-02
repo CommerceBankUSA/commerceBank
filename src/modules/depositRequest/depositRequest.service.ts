@@ -29,7 +29,7 @@ export const editDepositRequest = async (
 
 //Get a User Deposit Requests
 export const getDepositRequests = async (user: string) => {
-  return DepositRequestModel.find({ user });
+  return DepositRequestModel.find({ user }).sort({ createdAt: -1 });
 };
 
 //Get all Deposit Requests
