@@ -20,7 +20,7 @@ const depositRequestCore = z.object({
   _id: z.string(),
   amount: z.number(),
   isAccepted: z.nativeEnum(acceptedType),
-  hash: z.string(),
+  hash: z.string().optional(),
   status: z.nativeEnum(statusType),
   createdAt: z.string().datetime(),
 });
