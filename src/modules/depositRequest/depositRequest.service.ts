@@ -20,10 +20,9 @@ export const editDepositRequest = async (
   id: string,
   data: Partial<EditDepositRequestInput>
 ) => {
-  console.log("The data", data);
   return await DepositRequestModel.findByIdAndUpdate(
     id,
-    { data },
+    { $set: data },
     { new: true }
   );
 };

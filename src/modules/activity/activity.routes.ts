@@ -26,6 +26,7 @@ export default async function activityRoutes(app: FastifyInstance) {
         security: [{ bearerAuth: [] }],
         querystring: generalRef("paginationSchema"),
         response: {
+          200: activityRef("generalActivityResponse"),
           401: generalRef("unauthorizedSchema"),
           403: generalRef("forbiddenSchema"),
         },
@@ -44,6 +45,7 @@ export default async function activityRoutes(app: FastifyInstance) {
         security: [{ bearerAuth: [] }],
         params: activityRef("fetchAdminActivitiesSchema"),
         response: {
+          200: activityRef("generalActivityResponse"),
           401: generalRef("unauthorizedSchema"),
           403: generalRef("forbiddenSchema"),
         },

@@ -11,7 +11,6 @@ const activityCore = {
   }),
   action: z.string(),
   target: z.string().optional(),
-  targetModel: z.string().optional(),
   metadata: z.record(z.any()).optional(),
 };
 
@@ -29,6 +28,14 @@ const deleteActivitySchema = z.object({
   }),
 });
 
+//General Response Core
+const generalActivityResponse = z.object({
+  ...responseCore,
+  data: z.array(
+    z.object({ ...activityCore, createdAt: z.string().datetime() })
+  ),
+});
+
 export type CreateActivityInput = z.infer<typeof createActivitySchema>;
 export type FetchAdminActivitiesInput = z.infer<
   typeof fetchAdminActivitiesSchema
@@ -40,5 +47,6 @@ export const { schemas: activitySchemas, $ref: activityRef } = buildJsonSchemas(
     createActivitySchema,
     fetchAdminActivitiesSchema,
     deleteActivitySchema,
+    generalActivityResponse,
   }
 );

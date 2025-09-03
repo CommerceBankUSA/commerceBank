@@ -143,7 +143,11 @@ export const updateTransaction = async (
   id: string,
   data: Partial<TransactionDocument>
 ) => {
-  return await TransactionModel.findByIdAndUpdate(id, data, { new: true });
+  return await TransactionModel.findByIdAndUpdate(
+    id,
+    { $set: data },
+    { new: true }
+  );
 };
 
 //Delete a transaction
