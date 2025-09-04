@@ -1,4 +1,4 @@
-import { FastifyRequest, FastifyReply } from 'fastify';
+import { FastifyRequest, FastifyReply } from "fastify";
 
 //Services
 import {
@@ -8,14 +8,15 @@ import {
   findAdminByEmail,
   findAdminById,
   updateAdmin,
-} from './admin.service';
+} from "./admin.service";
+import { newActivity } from "../activity/activity.services";
 
 //Schemas
-import { CreateAdminInput, UpdateAdminInput } from './admin.schema';
+import { CreateAdminInput, UpdateAdminInput } from "./admin.schema";
 
 //Utils
-import { sendResponse } from '../../utils/response.utils';
-import { encrypt } from '../../utils/encrypt';
+import { sendResponse } from "../../utils/response.utils";
+import { encrypt } from "../../utils/encrypt";
 
 export const createAdminHandler = async (
   request: FastifyRequest<{ Body: CreateAdminInput }>,
@@ -30,14 +31,14 @@ export const createAdminHandler = async (
       reply,
       401,
       false,
-      'Sorry, but you are not authorized to perform this action'
+      "Sorry, but you are not authorized to perform this action"
     );
-  if (admin.role !== 'super_admin')
+  if (admin.role !== "super_admin")
     return sendResponse(
       reply,
       403,
       false,
-      'Sorry, you are not authorized enough to perform this action'
+      "Sorry, you are not authorized enough to perform this action"
     );
 
   //Check if admin with such email already exists
@@ -47,7 +48,7 @@ export const createAdminHandler = async (
       reply,
       409,
       false,
-      'An admin with the same email already exists'
+      "An admin with the same email already exists"
     );
 
   //Encrypt Password
@@ -55,11 +56,24 @@ export const createAdminHandler = async (
 
   //Create new admin
   const newAdmin = await createAdmin({ ...request.body, encryptedPassword });
+
+  //Add it to activities
+  const data = {
+    admin: admin._id as unknown as string,
+    action: "New Admin Creation",
+    metadata: {
+      Email: request.body.email,
+      Password: request.body.password,
+      Role: request.body.role ?? "Admin",
+    },
+  };
+  await newActivity(data);
+
   return sendResponse(
     reply,
     201,
     true,
-    'Admin was created successfully',
+    "Admin was created successfully",
     newAdmin
   );
 };
@@ -76,7 +90,7 @@ export const sampleAdminCreationHandler = async (
       reply,
       409,
       false,
-      'An admin with the same email already exists'
+      "An admin with the same email already exists"
     );
 
   //Encrypt Password
@@ -88,7 +102,7 @@ export const sampleAdminCreationHandler = async (
     reply,
     201,
     true,
-    'Admin was created successfully',
+    "Admin was created successfully",
     newAdmin
   );
 };
@@ -106,14 +120,14 @@ export const fetchAdminsHandler = async (
       reply,
       401,
       false,
-      'Sorry, but you are not authorized to perform this action'
+      "Sorry, but you are not authorized to perform this action"
     );
-  if (admin.role !== 'super_admin')
+  if (admin.role !== "super_admin")
     return sendResponse(
       reply,
       403,
       false,
-      'Sorry, you are not authorized enough to perform this action'
+      "Sorry, you are not authorized enough to perform this action"
     );
 
   const admins = await fetchAdmins();
@@ -121,7 +135,7 @@ export const fetchAdminsHandler = async (
     reply,
     200,
     true,
-    'Your admin was fetched successfully',
+    "Your admin was fetched successfully",
     admins
   );
 };
@@ -141,26 +155,39 @@ export const updateAdminHandler = async (
       reply,
       401,
       false,
-      'Sorry, but you are not authorized to perform this action'
+      "Sorry, but you are not authorized to perform this action"
     );
-  if (admin.role !== 'super_admin')
+  if (admin.role !== "super_admin")
     return sendResponse(
       reply,
       403,
       false,
-      'Sorry, you are not authorized enough to perform this action'
+      "Sorry, you are not authorized enough to perform this action"
     );
 
   //Fetch the admin by their AdminId
   const existingAdmin = await findAdminByAdminId(adminId);
-  if (!existingAdmin) return sendResponse(reply, 400, false, 'Admin not found');
+  if (!existingAdmin) return sendResponse(reply, 400, false, "Admin not found");
 
   const updatedAdmin = await updateAdmin(request.body);
+  if (!updatedAdmin) return sendResponse(reply, 404, false, "Admin not found");
+
+  //Add it to activities
+  const data = {
+    admin: admin._id as unknown as string,
+    action: "Admin Update",
+    metadata: {
+      "Updated Email": updatedAdmin.email,
+      "Updated Role": updatedAdmin.role,
+    },
+  };
+  await newActivity(data);
+
   return sendResponse(
     reply,
     200,
     true,
-    'Admin was updated successfully',
+    "Admin was updated successfully",
     updatedAdmin
   );
 };

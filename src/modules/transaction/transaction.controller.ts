@@ -19,6 +19,7 @@ import {
   createBeneficiary,
   ownBeneficiary,
 } from "../beneficiary/beneficiary.services";
+import { newActivity } from "../activity/activity.services";
 
 //Schemas
 import {
@@ -457,6 +458,21 @@ export const createUserTransactionHandler = async (
     });
   }
 
+  //Add it to activities
+  const data = {
+    admin: admin._id as unknown as string,
+    action: "New Transaction",
+    target: newTransaction.user.toString(),
+    metadata: {
+      "Transaction Type": newTransaction.transactionType,
+      "Transaction Method": newTransaction.subType,
+      Amount: newTransaction.amount,
+      "Transaction Level": newTransaction.level,
+      Status: newTransaction.status,
+    },
+  };
+  await newActivity(data);
+
   return sendResponse(
     reply,
     201,
@@ -521,6 +537,24 @@ export const updateTransactionHandler = async (
 
   //Update transaction and return
   const updatedTransaction = await updateTransaction(transactionId, { status });
+  if (!updatedTransaction)
+    return sendResponse(reply, 404, false, "Transaction not Found");
+
+  //Add it to activities
+  const data = {
+    admin: admin._id as unknown as string,
+    action: "Transaction Update",
+    target: updatedTransaction.user.toString(),
+    metadata: {
+      "Transaction Type": updatedTransaction.transactionType,
+      "Transaction Method": updatedTransaction.subType,
+      Amount: updatedTransaction.amount,
+      "Transaction Level": updatedTransaction.level,
+      Status: updatedTransaction.status,
+    },
+  };
+  await newActivity(data);
+
   return sendResponse(
     reply,
     200,
@@ -598,6 +632,24 @@ export const deleteUserTransactionHandler = async (
     );
 
   const deleted = await deleteTransaction(transactionId);
+  if (!deleted)
+    return sendResponse(reply, 404, false, "Transaction Details not Found");
+
+  //Add it to activities
+  const data = {
+    admin: admin._id as unknown as string,
+    action: "Transaction Deletion",
+    target: deleted.user.toString(),
+    metadata: {
+      "Transaction Type": deleted.transactionType,
+      "Transaction Method": deleted.subType,
+      Amount: deleted.amount,
+      "Transaction Level": deleted.level,
+      Status: deleted.status,
+    },
+  };
+  await newActivity(data);
+
   return sendResponse(
     reply,
     200,

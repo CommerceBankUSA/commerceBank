@@ -12,6 +12,7 @@ import {
 } from "./savings.service";
 import { findAdminById } from "../admin/admin.service";
 import { createNewTransaction } from "../transaction/transaction.service";
+import { newActivity } from "../activity/activity.services";
 
 //Schemas
 import {
@@ -252,7 +253,26 @@ export const deleteUserSavingsHandler = async (
       "Sorry, you are not authorized enough to perform this action"
     );
 
-  await deleteSavings(savingsId);
+  const deleted = await deleteSavings(savingsId);
+  if (!deleted)
+    return sendResponse(reply, 404, false, "Savings Details Not Found");
+
+  //Add it to activities
+  const data = {
+    admin: admin._id as unknown as string,
+    action: "Savings Delete",
+    target: deleted.user.toString(),
+    metadata: {
+      title: deleted.title,
+      amount: deleted.savedAmount,
+      "Target Amount": deleted.targetAmount ?? "No target amount",
+      "Total Interest Accrued": deleted.totalInterestAccrued,
+      status: deleted.status,
+      "Start Date": deleted.startDate,
+    },
+  };
+  await newActivity(data);
+
   return sendResponse(
     reply,
     204,

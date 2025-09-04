@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 
 //Services
 import { findAdminById } from "../admin/admin.service";
+import { newActivity } from "../activity/activity.services";
 
 //Schemas
 import {
@@ -73,8 +74,19 @@ export const CreateAccountHandler = async (
       "An account with this account number already exists"
     );
 
-  //Create Account and return
+  //Create Account, add it to the activity and return
   const newAccount = await createAccount(request.body);
+
+  const data = {
+    admin: admin._id as unknown as string,
+    action: "Created new account",
+    metadata: {
+      accountName: newAccount.fullName,
+      bank: newAccount.bankName,
+      accountNumber: newAccount.accountNumber,
+    },
+  };
+  await newActivity(data);
   return sendResponse(
     reply,
     201,
@@ -104,6 +116,18 @@ export const editAccountHandler = async (
   if (!editedAccount)
     return sendResponse(reply, 400, false, "Account not found.");
 
+  //Add it to activities
+  const data = {
+    admin: admin._id as unknown as string,
+    action: "Edited an existing account",
+    metadata: {
+      accountName: editedAccount.fullName,
+      bank: editedAccount.bankName,
+      accountNumber: editedAccount.accountNumber,
+    },
+  };
+  await newActivity(data);
+
   return sendResponse(
     reply,
     200,
@@ -129,6 +153,21 @@ export const deleteAccountHandler = async (
     );
 
   //Delete Account and return response
-  await deleteAccount(request.params.id);
+  const deletedAccount = await deleteAccount(request.params.id);
+  if (!deletedAccount)
+    return sendResponse(reply, 404, false, "Account not found");
+
+  //Add it to activities
+  const data = {
+    admin: admin._id as unknown as string,
+    action: "Deleted an existing account",
+    metadata: {
+      accountName: deletedAccount.fullName,
+      bank: deletedAccount.bankName,
+      accountNumber: deletedAccount.accountNumber,
+    },
+  };
+  await newActivity(data);
+
   return sendResponse(reply, 204, true, "Account was deleted successfully.");
 };

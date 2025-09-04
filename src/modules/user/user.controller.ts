@@ -37,6 +37,7 @@ import { encrypt } from "../../utils/encrypt";
 import { deleteFileFromS3, uploadFileToS3 } from "../../libs/upload";
 import { emitAndSaveNotification } from "../../utils/socket";
 import { PaginationInput } from "../general/general.schema";
+import { newActivity } from "../activity/activity.services";
 
 //Constants
 const ALLOWED_MIME_TYPES = [
@@ -593,6 +594,20 @@ export const editUserHandler = async (
       html: template.html,
     });
   }
+
+  //Add it to activities
+  const data = {
+    admin: admin._id as unknown as string,
+    action: "User Profile Update",
+    target: updatedUser._id as unknown as string,
+    metadata: {
+      "Full name": updatedUser.fullName,
+      Email: updatedUser.email,
+      Gender: updatedUser.gender,
+      "Account Number": updatedUser.accountNumber,
+    },
+  };
+  await newActivity(data);
 
   //Return
   return sendResponse(

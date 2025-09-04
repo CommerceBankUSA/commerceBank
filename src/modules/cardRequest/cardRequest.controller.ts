@@ -11,6 +11,7 @@ import {
 } from "./cardRequest.services";
 import { findAdminById } from "../admin/admin.service";
 import { findUserById } from "../user/user.service";
+import { newActivity } from "../activity/activity.services";
 
 //Schemas
 import {
@@ -177,6 +178,19 @@ export const updateCardRequestHandler = async (
     html: cardRequestEmailTemplate.html,
   });
 
+  //Add it to activities
+  const data = {
+    admin: admin._id as unknown as string,
+    action: "Card Request Update",
+    target: userDetails._id.toString(),
+    metadata: {
+      "User Name": userDetails.fullName,
+      "User Email": userDetails.email,
+      "Card Request Status": updated.status,
+    },
+  };
+  await newActivity(data);
+
   return sendResponse(reply, 200, true, "Card request updated", updated);
 };
 
@@ -203,5 +217,16 @@ export const deleteCardRequestHandler = async (
     );
 
   const deleted = await deleteCardRequest(request.params.requestId);
+  if (!deleted)
+    return sendResponse(reply, 404, false, "Card request not found");
+
+  //Add it to activities
+  const data = {
+    admin: admin._id as unknown as string,
+    action: "Card Request Deletion",
+    target: deleted.user.toString(),
+  };
+  await newActivity(data);
+
   return sendResponse(reply, 200, true, "Card request deleted", deleted);
 };

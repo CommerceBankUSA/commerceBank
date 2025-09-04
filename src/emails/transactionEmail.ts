@@ -43,10 +43,11 @@ export default ({
       }
       .header img {
         width: 30px;
+        text-align: center;
+        margin: 0 auto;
       }
-      .content h1 {
-        color: #000000;
-        font-size: 22px;
+      .content  h2 {
+        margin: 10px 0;
       }
       .content p {
         font-size: 16px;
@@ -95,13 +96,21 @@ export default ({
       <div class="header">
         <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1753090598/logo_oicitz.png" alt="Bank Logo">
       </div>
+      <hr />
       <div class="content">
-        <h1>${type} Alert</h1>
-        <p>Hi ${name},</p>
-        <p>Your account has been ${type}ed with <span class="highlight">$${amount.toLocaleString()}</span> via ${subType} on <strong>${date}</strong>.</p>
-        <p>Description: <em>${description || "N/A"}</em></p>
-        <p>Transaction ID: <strong>${transactionId}</strong></p>
-        <p>Your new pending balance is <span class="highlight">$${balance.toLocaleString()}</span>.</p>
+        <p>Dear ${name},</p>
+        <p>Your transfer of $${amount.toLocaleString()} was initiated successfully. Your pending balance is <span class="highlight">$${balance.toLocaleString()}</span>.
+        <hr />
+
+        <h2 class="highlight">Transfer Details</h2>
+        <p>Type: <span class="highlight">${type}</span></p>
+        <p>Method: <span class="highlight">${subType}</span></p>
+        <p>Amount: <span class="highlight">${amount.toLocaleString()}</span></p>
+        <p>Description: <span class="highlight">${description || "No Description"}</span></p>
+        <p>Transaction ID: <span class="highlight">${transactionId}</span></p>
+        <p>Transaction Date: <span class="highlight">${date}</span></p>
+
+        <hr />
         <a href="https//www.commercebankusa.com/auth" class="button">View Transaction</a>
       </div>
     </div>

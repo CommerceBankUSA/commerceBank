@@ -12,6 +12,7 @@ import {
 } from "./depositRequest.service";
 import { createNewTransaction } from "../transaction/transaction.service";
 import { findAdminById } from "../admin/admin.service";
+import { newActivity } from "../activity/activity.services";
 
 //Schemas
 import {
@@ -130,8 +131,10 @@ export const approveDepositRequestHandler = async (
 
   //Edit deposit request
   const editedRequest = await editDepositRequest(id, updateData);
+  if (!editedRequest)
+    return sendResponse(reply, 404, false, "Deposit Request Not Found");
 
-  if (editedRequest && editedRequest.status === "successful") {
+  if (editedRequest.status === "successful") {
     //Create a new transaction
     const transactionId = generateTransactionHash();
 
@@ -141,7 +144,7 @@ export const approveDepositRequestHandler = async (
       subType: SubType.DEPOSIT,
       status: "successful",
     };
-    const newWithdrawal = await createNewTransaction(
+    const newDeposit = await createNewTransaction(
       editedRequest.user.toString(),
       data,
       transactionId
@@ -155,12 +158,26 @@ export const approveDepositRequestHandler = async (
       title: `Deposit`,
       message: `$${editedRequest.amount.toLocaleString()} was deposited to your account successfully.`,
       data: {
-        transactionId: newWithdrawal.transactionId,
+        transactionId: newDeposit.transactionId,
         amount: editedRequest.amount,
-        date: newWithdrawal.createdAt,
+        date: newDeposit.createdAt,
       },
     });
   }
+
+  //Add it to activities
+  const data = {
+    admin: admin._id as unknown as string,
+    action: "Deposit Request Update",
+    target: editedRequest.user.toString(),
+    metadata: {
+      "Is Request Accepted": editedRequest.isAccepted,
+      "Request Status ": editedRequest.status,
+      "Request Amount": editedRequest.amount,
+      "Request Hash": editedRequest.hash ?? "No Hash Added",
+    },
+  };
+  await newActivity(data);
 
   return sendResponse(
     reply,
@@ -213,7 +230,18 @@ export const deleteDepositRequestHandler = async (
       "Sorry, you are not authorized enough to perform this action"
     );
 
-  await deleteDepositRequest(id);
+  const deleted = await deleteDepositRequest(id);
+  if (!deleted)
+    return sendResponse(reply, 404, false, "Deposit Request Details Not Found");
+
+  //Add it to activities
+  const data = {
+    admin: admin._id as unknown as string,
+    action: "Deposit Request Delete",
+    target: deleted.user.toString(),
+  };
+  await newActivity(data);
+
   return sendResponse(
     reply,
     204,
