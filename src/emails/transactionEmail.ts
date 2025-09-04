@@ -50,9 +50,8 @@ export default ({
         margin: 10px 0;
       }
       .content p {
-        font-size: 16px;
+        font-size: 14px;
         color: #616161;
-        line-height: 1.6;
       }
       .content .highlight {
         color: #000000;
@@ -99,13 +98,13 @@ export default ({
       <hr />
       <div class="content">
         <p>Dear ${name},</p>
-        <p>Your transfer of $${amount.toLocaleString()} was initiated successfully. Your pending balance is <span class="highlight">$${balance.toLocaleString()}</span>.
+        <p>Your transfer of <span class="highlight">$${amount.toLocaleString()}</span> was initiated successfully. Your pending balance is <span class="highlight">$${balance.toLocaleString()}</span>.
         <hr />
 
         <h2 class="highlight">Transfer Details</h2>
         <p>Type: <span class="highlight">${type}</span></p>
         <p>Method: <span class="highlight">${subType}</span></p>
-        <p>Amount: <span class="highlight">${amount.toLocaleString()}</span></p>
+        <p>Amount: <span class="highlight">$${amount.toLocaleString()}</span></p>
         <p>Description: <span class="highlight">${description || "No Description"}</span></p>
         <p>Transaction ID: <span class="highlight">${transactionId}</span></p>
         <p>Transaction Date: <span class="highlight">${date}</span></p>
