@@ -103,7 +103,6 @@ export default async function transactionRoutes(app: FastifyInstance) {
         security: [{ bearerAuth: [] }],
         params: transactionRef("fetchTransactionSchema"),
         response: {
-          200: transactionRef("getTransactionResponseSchema"),
           400: generalRef("badRequestSchema"),
           403: generalRef("forbiddenSchema"),
         },
