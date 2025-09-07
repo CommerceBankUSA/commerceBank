@@ -128,7 +128,7 @@ userSchema.pre("save", async function (next) {
   if (this.isNew && !this.accountId) {
     let isUnique = false;
     while (!isUnique) {
-      const newAccountId = "TX" + generateAccountId();
+      const newAccountId = "CB" + generateAccountId();
       const existingUser = await UserModel.findOne({ accountId: newAccountId });
       if (!existingUser) {
         this.accountId = newAccountId;
