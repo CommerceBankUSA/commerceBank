@@ -6,10 +6,11 @@ import {
   deleteAccountHandler,
   editAccountHandler,
   fetchAccountHandler,
+  fetchAccountsHandler,
 } from "./account.controller";
 
 //Schemas
-import { generalRef } from "../general/general.schema";
+import { generalRef, PaginationInput } from "../general/general.schema";
 import {
   accountRef,
   CreateAccountInput,
@@ -92,5 +93,19 @@ export default async function accountRoutes(app: FastifyInstance) {
       },
     },
     deleteAccountHandler
+  );
+
+  //Fetch all accounts
+  app.get<{ Querystring: PaginationInput }>(
+    "/allAccounts",
+    {
+      preHandler: app.authenticateAdmin,
+      schema: {
+        tags: ["Users", "Admins"],
+        security: [{ bearerAuth: [] }],
+        querystring: generalRef("paginationSchema"),
+      },
+    },
+    fetchAccountsHandler
   );
 }

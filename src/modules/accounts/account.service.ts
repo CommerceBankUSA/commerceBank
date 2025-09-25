@@ -44,3 +44,22 @@ export const deleteAccount = async (id: string) => {
     _id: id,
   });
 };
+
+//Fetch all accounts
+export const fetchAccounts = async (page = 1, limit = 20) => {
+  const skip = (page - 1) * limit;
+
+  const [accounts, total] = await Promise.all([
+    AccountModel.find().skip(skip).limit(limit).sort({ createdAt: -1 }),
+    AccountModel.countDocuments(),
+  ]);
+
+  return {
+    data: accounts,
+    pagination: {
+      total,
+      page,
+      pages: Math.ceil(total / limit),
+    },
+  };
+};

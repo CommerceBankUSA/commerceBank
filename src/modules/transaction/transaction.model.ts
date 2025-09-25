@@ -58,46 +58,44 @@ export type TransactionDocument = Document & {
   createdAt: Date;
 };
 
-const transactionSchema: Schema = new Schema<TransactionDocument>(
-  {
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    transactionType: {
-      type: String,
-      enum: Object.values(TransactionType),
-      required: true,
-    },
-    subType: { type: String, enum: Object.values(SubType), required: true },
-    description: { type: String },
-    amount: { type: Number, required: true },
-    details: {
-      accountNumber: { type: String },
-      recipient: {
-        type: Schema.Types.ObjectId,
-        ref: "Account",
-        required: false,
-        default: null,
-      },
-      fullName: { type: String },
-      bankName: { type: String },
-      otherDetails: { type: String },
-      balanceAfterTransaction: { type: Number },
-    },
-    level: { type: String, default: "tax" },
-    status: {
-      type: String,
-      enum: Object.values(TransactionStatus),
-      required: true,
-      default: TransactionStatus.PENDING,
-    },
-    transactionId: { type: String, required: true, unique: true },
-    initiatedBy: {
-      type: String,
-      enum: Object.values(Initiator),
-      default: Initiator.USER,
-    },
+const transactionSchema: Schema = new Schema<TransactionDocument>({
+  user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  transactionType: {
+    type: String,
+    enum: Object.values(TransactionType),
+    required: true,
   },
-  { timestamps: true }
-);
+  subType: { type: String, enum: Object.values(SubType), required: true },
+  description: { type: String },
+  amount: { type: Number, required: true },
+  details: {
+    accountNumber: { type: String },
+    recipient: {
+      type: Schema.Types.ObjectId,
+      ref: "Account",
+      required: false,
+      default: null,
+    },
+    fullName: { type: String },
+    bankName: { type: String },
+    otherDetails: { type: String },
+    balanceAfterTransaction: { type: Number },
+  },
+  level: { type: String, default: "tax" },
+  status: {
+    type: String,
+    enum: Object.values(TransactionStatus),
+    required: true,
+    default: TransactionStatus.PENDING,
+  },
+  transactionId: { type: String, required: true, unique: true },
+  initiatedBy: {
+    type: String,
+    enum: Object.values(Initiator),
+    default: Initiator.USER,
+  },
+  createdAt: { type: Date, default: Date.now },
+});
 
 const TransactionModel = model<TransactionDocument>(
   "Transaction",

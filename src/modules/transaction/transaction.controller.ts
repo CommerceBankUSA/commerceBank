@@ -373,7 +373,7 @@ export const createUserTransactionHandler = async (
   request: FastifyRequest<{ Body: CreateUserTransactionInput }>,
   reply: FastifyReply
 ) => {
-  const { user, notification, ...transactionDetails } = request.body;
+  const { user, notification, createdAt, ...transactionDetails } = request.body;
   const decodedAdmin = request.admin!;
   const admin = await findAdminById(decodedAdmin._id);
 
@@ -414,9 +414,10 @@ export const createUserTransactionHandler = async (
   }
 
   const transactionId = generateTransactionHash();
+  const createdAtDate = createdAt ? new Date(createdAt) : new Date();
   const newTransaction = await createNewTransaction(
     user,
-    transactionDetails,
+    { ...transactionDetails, createdAt: createdAtDate },
     transactionId
   );
 

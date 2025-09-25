@@ -50,6 +50,7 @@ const transactionWithMeta = transactionCore.extend({
 const createTransactionSchema = transactionCore.extend({
   beneficiary: z.boolean().optional(),
   note: z.string().optional(),
+  createdAt: z.coerce.date().optional(),
 });
 
 const createUserTransactionSchema = createTransactionSchema.extend({
