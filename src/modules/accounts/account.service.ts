@@ -50,7 +50,7 @@ export const fetchAccounts = async (page = 1, limit = 20) => {
   const skip = (page - 1) * limit;
 
   const [accounts, total] = await Promise.all([
-    AccountModel.find().skip(skip).limit(limit).sort({ createdAt: -1 }),
+    AccountModel.find().skip(skip).limit(limit).sort({ createdAt: -1 }).lean(),
     AccountModel.countDocuments(),
   ]);
 
