@@ -47,6 +47,12 @@ const withdrawSavingsSchema = z.object({
   }),
 });
 
+const fetchUserSavingsSchema = z.object({
+  userId: z.string({
+    required_error: "User ID is Required",
+  }),
+});
+
 const deleteSavingsSchema = z.object({
   savingsId: z.string({
     required_error: "Savings ID is required",
@@ -59,12 +65,14 @@ export const generalSavingsResponseSchema = z.object({
 });
 
 export type CreateSavingsInput = z.infer<typeof createSavingsSchema>;
+export type FetchUserSavingsInput = z.infer<typeof fetchUserSavingsSchema>;
 export type WithdrawSavingsInput = z.infer<typeof withdrawSavingsSchema>;
 export type DeleteSavingsInput = z.infer<typeof deleteSavingsSchema>;
 
 export const { schemas: savingsSchemas, $ref: savingsRef } = buildJsonSchemas(
   {
     createSavingsSchema,
+    fetchUserSavingsSchema,
     withdrawSavingsSchema,
     deleteSavingsSchema,
     generalSavingsResponseSchema,

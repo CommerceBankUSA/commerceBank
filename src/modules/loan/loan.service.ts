@@ -52,7 +52,10 @@ export const getLoans = async (page = 1, limit = 10) => {
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 })
-      .populate("user", "fullName email profilePicture"),
+      .populate(
+        "user",
+        "fullName email profilePicture isOnline isVerified isFullyVerified"
+      ),
     LoanModel.countDocuments(),
   ]);
 
@@ -130,7 +133,10 @@ export const getLoanRequests = async (page = 1, limit = 10) => {
   const skip = (page - 1) * limit;
   const total = await LoanModel.countDocuments();
   const requests = await LoanModel.find()
-    .populate("user", "fullName email accountNumber accountId profilePicture")
+    .populate(
+      "user",
+      "fullName email profilePicture isOnline isVerified isFullyVerified"
+    )
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit);

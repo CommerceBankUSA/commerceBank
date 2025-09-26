@@ -1,4 +1,4 @@
-import { CardRequestModel, CardRequestStatus } from './cardRequest.model';
+import { CardRequestModel, CardRequestStatus } from "./cardRequest.model";
 
 //Create card request
 export const createCardRequest = async (
@@ -31,7 +31,10 @@ export const getCardRequests = async (page = 1, limit = 10) => {
   const skip = (page - 1) * limit;
   const total = await CardRequestModel.countDocuments();
   const requests = await CardRequestModel.find()
-    .populate('user', 'userName email accountId profilePicture')
+    .populate(
+      "user",
+      "fullName email profilePicture isOnline isVerified isFullyVerified"
+    )
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit);

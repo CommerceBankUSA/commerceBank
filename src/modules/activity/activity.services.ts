@@ -29,9 +29,9 @@ export async function getAllActivities(page = 1, limit = 20) {
 
 //Get an admin activities
 export async function getActivitiesByAdmin(adminId: string) {
-  return await ActivityModel.find({ actor: adminId })
-    .populate("actor", "name role")
-    .sort({ timestamp: -1 });
+  return await ActivityModel.find({ admin: adminId })
+    .sort({ timestamp: -1 })
+    .lean();
 }
 
 //Delete an activity

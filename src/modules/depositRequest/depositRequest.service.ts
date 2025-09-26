@@ -37,7 +37,10 @@ export const getAllDepositRequest = async (page = 1, limit = 10) => {
   const skip = (page - 1) * limit;
   const total = await DepositRequestModel.countDocuments();
   const requests = await DepositRequestModel.find()
-    .populate("user", "userName email accountId profilePicture")
+    .populate(
+      "user",
+      "fullName email profilePicture isOnline isVerified isFullyVerified"
+    )
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit);

@@ -7,6 +7,7 @@ import {
   deleteUserSavingsHandler,
   fetchAllSavingsHandler,
   fetchSavingsHandler,
+  fetchUserSavingsHandler,
   topUpSavingsHandler,
   withdrawSavingsHandler,
 } from "./savings.controllers";
@@ -15,6 +16,7 @@ import {
 import {
   CreateSavingsInput,
   DeleteSavingsInput,
+  FetchUserSavingsInput,
   savingsRef,
   WithdrawSavingsInput,
 } from "./savings.schema";
@@ -110,6 +112,20 @@ export default async function savingsRoutes(app: FastifyInstance) {
       },
     },
     fetchAllSavingsHandler
+  );
+
+  //Get a User Savings
+  app.get<{ Params: FetchUserSavingsInput }>(
+    "/savings/:userId",
+    {
+      preHandler: app.authenticateAdmin,
+      schema: {
+        tags: ["Savings", "Admins"],
+        security: [{ bearerAuth: [] }],
+        params: savingsRef("fetchUserSavingsSchema"),
+      },
+    },
+    fetchUserSavingsHandler
   );
 
   //Delete a Savings

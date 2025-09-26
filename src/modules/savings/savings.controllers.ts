@@ -18,6 +18,7 @@ import { newActivity } from "../activity/activity.services";
 import {
   CreateSavingsInput,
   DeleteSavingsInput,
+  FetchUserSavingsInput,
   WithdrawSavingsInput,
 } from "./savings.schema";
 import { PaginationInput } from "../general/general.schema";
@@ -225,6 +226,34 @@ export const fetchAllSavingsHandler = async (
     true,
     "All the savings was fetched successfully",
     response
+  );
+};
+
+//Fetch a user savings
+export const fetchUserSavingsHandler = async (
+  request: FastifyRequest<{ Params: FetchUserSavingsInput }>,
+  reply: FastifyReply
+) => {
+  const decodedAdmin = request.admin!;
+  const userId = request.params.userId;
+
+  //Fetch admin and make sure he is a super admin
+  const admin = await findAdminById(decodedAdmin?._id);
+  if (!admin)
+    return sendResponse(
+      reply,
+      400,
+      false,
+      "Sorry, but you are not authorized to perform this action"
+    );
+
+  const userSavings = await fetchUserSavings(userId);
+  return sendResponse(
+    reply,
+    200,
+    true,
+    "User savings was fetched successfully",
+    userSavings
   );
 };
 

@@ -11,7 +11,7 @@ export const createSavings = async (input: CreateSavingsInput) => {
 
 //Fetch a Users Savings
 export const fetchUserSavings = async (user: string) => {
-  return await SavingsModel.find({ user });
+  return await SavingsModel.find({ user }).lean();
 };
 
 //Fetch all Savings
@@ -19,7 +19,10 @@ export const getAllSavings = async (page = 1, limit = 10) => {
   const skip = (page - 1) * limit;
   const total = await SavingsModel.countDocuments();
   const requests = await SavingsModel.find()
-    .populate("user", "userName email accountId profilePicture")
+    .populate(
+      "user",
+      "fullName email profilePicture isOnline isVerified isFullyVerified"
+    )
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit);
