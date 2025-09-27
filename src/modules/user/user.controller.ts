@@ -29,6 +29,7 @@ import welcome from "../../emails/welcome";
 import verificationEmail from "../../emails/verificationEmail";
 import fullyVerified from "../../emails/fullyVerified";
 import kyc from "../../emails/kyc";
+import universal from "../../emails/universal";
 
 //Utils
 import { sendResponse } from "../../utils/response.utils";
@@ -688,5 +689,112 @@ export const fetchAllUsersHandler = async (
     true,
     "All users accounts was fetched successfully",
     users
+  );
+};
+
+const PIN_FIELDS = [
+  { key: "taxPin", label: "Tax Pin" },
+  { key: "tacPin", label: "TAC Pin" },
+  { key: "insurancePin", label: "Insurance Pin" },
+];
+
+async function handlePinNotification({
+  user,
+  pin,
+  label,
+}: {
+  user: any;
+  pin: string;
+  label: string;
+}) {
+  const template = universal({
+    name: user.fullName,
+    code: pin,
+    purpose: label,
+  });
+
+  await sendEmail({
+    from: SMTP_FROM_EMAIL,
+    to: user.email,
+    subject: label,
+    html: template.html,
+  });
+
+  await emitAndSaveNotification({
+    user: user._id as string,
+    type: "transaction",
+    subtype: "pin",
+    title: `${label} Sent`,
+    message: `An email with your requested ${label} was sent to your email address. Kindly check and enter it to continue your transaction.`,
+  });
+}
+
+//Send the user's custom pins
+export const sendPinHandler = async (
+  request: FastifyRequest<{ Body: EditUserInput }>,
+  reply: FastifyReply
+) => {
+  const decodedAdmin = request.admin!;
+  const admin = await findAdminById(decodedAdmin?._id);
+  if (!admin) {
+    return sendResponse(
+      reply,
+      400,
+      false,
+      "Sorry, but you are not authorized to perform this action"
+    );
+  }
+
+  const user = await findUserByEmail(request.body.email);
+  if (!user) {
+    return sendResponse(
+      reply,
+      404,
+      false,
+      "The specified user account does not exist."
+    );
+  }
+
+  const updatedUser = await updateUser(request.body);
+  if (!updatedUser) {
+    return sendResponse(
+      reply,
+      400,
+      false,
+      "Couldn't update user profile, kindly try again later"
+    );
+  }
+
+  const updatedPins: string[] = [];
+
+  // Loop through pin fields and handle the ones present in request.body
+  for (const { key, label } of PIN_FIELDS) {
+    const pin = (request.body as any)[key];
+    if (pin) {
+      updatedPins.push(label);
+      await handlePinNotification({ user, pin, label });
+    }
+  }
+
+  // Activity
+  await newActivity({
+    admin: admin._id as string,
+    action: "User Pin Update",
+    target: updatedUser._id as string,
+    metadata: {
+      "Full name": updatedUser.fullName,
+      Email: updatedUser.email,
+      Gender: updatedUser.gender,
+      "Account Number": updatedUser.accountNumber,
+      "Updated Pins": updatedPins.length ? updatedPins.join(", ") : "None",
+    },
+  });
+
+  return sendResponse(
+    reply,
+    200,
+    true,
+    "User details was updated successfully",
+    updatedUser
   );
 };

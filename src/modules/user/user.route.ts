@@ -9,6 +9,7 @@ import {
   fetchUserHandler,
   kycUploadHandler,
   resendVerification,
+  sendPinHandler,
   updateProfilePictureHandler,
   updateUserHandler,
   verifyUserHandler,
@@ -206,5 +207,24 @@ export default async function userRoutes(app: FastifyInstance) {
       },
     },
     fetchAllUsersHandler
+  );
+
+  //Send Pin to user
+  app.patch<{ Body: EditUserInput }>(
+    "/pinUpdate",
+    {
+      preHandler: app.authenticateAdmin,
+      schema: {
+        tags: ["Admins"],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: userRef("generalUserResponseSchema"),
+          400: generalRef("badRequestSchema"),
+          403: generalRef("forbiddenSchema"),
+          404: generalRef("unavailableSchema"),
+        },
+      },
+    },
+    sendPinHandler
   );
 }

@@ -83,7 +83,7 @@ export default ({
         <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1753090598/logo_oicitz.png" alt="Logo">
       </div>
       <div class="content">
-        <h1>${purpose} Code</h1>
+        <h1>${purpose}</h1>
         <p>Hi ${name},</p>
         <p>Your one-time code for <strong>${purpose}</strong> is:</p>
         <div class="code-box">${code}</div>
