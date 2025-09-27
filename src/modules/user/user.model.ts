@@ -57,7 +57,6 @@ export type UserDocument = Document & {
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
-  isStillSuspended(): boolean;
   generateNewVerificationCode(): Promise<string>;
 };
 
@@ -166,6 +165,20 @@ userSchema.pre("save", async function (next) {
 
   const salt = await bcrypt.genSalt(12);
   this.password = bcrypt.hashSync(this.password, salt);
+  next();
+});
+
+//Adding of Suspension Date
+userSchema.pre("save", function (next) {
+  if (this.isModified("isSuspended") && this.isSuspended === true) {
+    this.suspendedDate = new Date();
+  }
+
+  // Optional: clear the date if reactivated
+  if (this.isModified("isSuspended") && this.isSuspended === false) {
+    this.suspendedDate = null;
+  }
+
   next();
 });
 
