@@ -149,6 +149,7 @@ export const initSocket = (server: any) => {
       if (userId) {
         onlineUsers.delete(userId);
         await updateUserSession(userId);
+        await updateOnlineStatus(userId, false);
         io.emit("userOffline", { userId });
         console.log(`User ${userId} went offline`);
       }
