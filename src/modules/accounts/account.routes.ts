@@ -26,7 +26,7 @@ export default async function accountRoutes(app: FastifyInstance) {
     {
       preHandler: app.authenticate,
       schema: {
-        tags: ["Accounts"],
+        tags: ["Users", "Accounts"],
         security: [{ bearerAuth: [] }],
         params: accountRef("getAccountSchema"),
         response: {
@@ -101,7 +101,7 @@ export default async function accountRoutes(app: FastifyInstance) {
     {
       preHandler: app.authenticateAdmin,
       schema: {
-        tags: ["Users", "Admins"],
+        tags: ["Admins", "Accounts"],
         security: [{ bearerAuth: [] }],
         querystring: generalRef("paginationSchema"),
       },
