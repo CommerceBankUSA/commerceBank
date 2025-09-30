@@ -506,7 +506,7 @@ export const updateTransactionHandler = async (
   request: FastifyRequest<{ Body: UpdateTransactionInput }>,
   reply: FastifyReply
 ) => {
-  const { status, transactionId } = request.body;
+  const { status, transactionId, createdAt } = request.body;
   const decodedAdmin = request.admin!;
 
   //Fetch admin and make sure he is a super admin
@@ -526,6 +526,16 @@ export const updateTransactionHandler = async (
       "Sorry, you are not authorized enough to perform this action"
     );
 
+  //Make sure one of the update values exists
+  if (!status && !createdAt) {
+    return sendResponse(
+      reply,
+      400,
+      false,
+      "Either status or createdAt must be provided."
+    );
+  }
+
   //Fetch Transaction and Update
   const transaction = await getTransactionById(transactionId);
   if (!transaction)
@@ -537,7 +547,15 @@ export const updateTransactionHandler = async (
     );
 
   //Update transaction and return
-  const updatedTransaction = await updateTransaction(transactionId, { status });
+  const updateFields: Record<string, any> = {};
+
+  if (status) updateFields.status = status;
+  if (createdAt) updateFields.createdAt = new Date(createdAt);
+
+  const updatedTransaction = await updateTransaction(
+    transactionId,
+    updateFields
+  );
   if (!updatedTransaction)
     return sendResponse(reply, 404, false, "Transaction not Found");
 

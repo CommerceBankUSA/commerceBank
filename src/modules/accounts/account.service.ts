@@ -24,13 +24,13 @@ export const findAccount = async (accountNumber: string) => {
 
 //Edit Account
 export const editAccount = async (input: EditAccountInput) => {
-  const { accountNumber, ...rest } = input;
+  const { accountId, ...rest } = input;
 
   // Prepare update object
   const updateFields: Partial<typeof input> = { ...rest };
 
   const updatedAccount = await AccountModel.findOneAndUpdate(
-    { accountNumber },
+    { _id: accountId },
     { $set: updateFields },
     { new: true, runValidators: true }
   );

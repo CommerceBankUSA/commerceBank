@@ -43,6 +43,7 @@ export type UserDocument = Document & {
   taxPin: string | null;
   tacPin: string | null;
   insurancePin: string | null;
+  transactionSuspended: boolean;
   location: {
     type: "Point";
     coordinates: number[];
@@ -103,6 +104,7 @@ const userSchema = new Schema<UserDocument>(
     taxPin: { type: String, default: null },
     tacPin: { type: String, default: null },
     insurancePin: { type: String, default: null },
+    transactionSuspended: { type: Boolean, default: false },
     location: {
       type: { type: String, enum: ["Point"] },
       coordinates: { type: [Number] },

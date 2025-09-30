@@ -21,9 +21,10 @@ const getAccountSchema = z.object({
 });
 
 const editAccountSchema = z.object({
-  accountNumber: z.string({
-    required_error: "Account Number is Required",
+  accountId: z.string({
+    required_error: "Account ID is required",
   }),
+  accountNumber: z.string().optional(),
   fullName: z.string().optional(),
   bankName: z.string().optional(),
 });

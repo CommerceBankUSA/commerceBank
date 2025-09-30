@@ -55,6 +55,7 @@ const userCore = {
   taxPin: z.string().nullable(),
   tacPin: z.string().nullable(),
   insurancePin: z.string().nullable(),
+  transactionSuspended: z.boolean().nullable(),
   isVerified: z.boolean(),
   isFullyVerified: z.boolean(),
   isSuspended: z.boolean(),
@@ -123,6 +124,7 @@ const editUserSchema = z.object({
   taxPin: z.string().optional(),
   tacPin: z.string().optional(),
   insurancePin: z.string().optional(),
+  transactionSuspended: z.boolean().optional(),
   gender: z.enum(["male", "female", "prefer not to say"]).optional(),
   phoneNumber: z.string().optional(),
   password: z

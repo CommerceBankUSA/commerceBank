@@ -109,12 +109,11 @@ const getTransactionResponseSchema = z.object({
 
 // Administrative Endpoints
 const updateTransactionSchema = z.object({
-  status: z.nativeEnum(TransactionStatus, {
-    required_error: "Status is required",
-  }),
+  status: z.nativeEnum(TransactionStatus).optional(),
   transactionId: z.string({
     required_error: "TransactionID is required",
   }),
+  createdAt: z.coerce.date().optional(),
 });
 
 const getUserTransactionsSchema = z.object({
