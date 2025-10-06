@@ -13,7 +13,11 @@ export async function getAllActivities(page = 1, limit = 20) {
   const skip = (page - 1) * limit;
 
   const [activities, total] = await Promise.all([
-    ActivityModel.find().skip(skip).limit(limit).sort({ createdAt: -1 }).lean(),
+    ActivityModel.find()
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 })
+      .populate("admin", "email role lastSession"),
     ActivityModel.countDocuments(),
   ]);
 
