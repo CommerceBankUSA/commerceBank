@@ -49,6 +49,7 @@ const generalAdminResponseSchema = z.object({
     role: z.nativeEnum(AdminRole).optional(),
     lastSession: z.string().date().optional(),
     adminId: z.string(),
+    isSuspended: z.boolean(),
     encryptedPassword: z.string(),
     createdAt: z.string().datetime(),
   }),
@@ -63,6 +64,7 @@ const fetchAdminsResponseSchema = z.object({
       role: z.nativeEnum(AdminRole).optional(),
       lastSession: z.string().date().optional(),
       adminId: z.string(),
+      isSuspended: z.boolean(),
       encryptedPassword: z.string(),
       createdAt: z.string().datetime(),
     })
