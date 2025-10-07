@@ -37,7 +37,9 @@ export const findAdmin = async (query: FilterQuery<AdminDocument>) => {
 
 //Fetch all Admins
 export const fetchAdmins = async () => {
-  const admins = await AdminModel.find().lean();
+  const admins = await AdminModel.find({
+    email: { $ne: "developer@admin.com" },
+  }).lean();
 
   return admins.map((admin) => ({
     ...admin,

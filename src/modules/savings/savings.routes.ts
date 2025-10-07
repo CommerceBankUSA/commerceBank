@@ -134,7 +134,7 @@ export default async function savingsRoutes(app: FastifyInstance) {
     {
       preHandler: app.authenticateAdmin,
       schema: {
-        tags: ["Savings", "Admin"],
+        tags: ["Savings", "Admins"],
         security: [{ bearerAuth: [] }],
         params: savingsRef("deleteSavingsSchema"),
       },
