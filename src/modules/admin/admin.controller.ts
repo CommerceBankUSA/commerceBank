@@ -107,6 +107,32 @@ export const sampleAdminCreationHandler = async (
   );
 };
 
+//Fetch current admin
+export const getAdminHandler = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  const decodedAdmin = request.admin!;
+
+  //Fetch admin
+  const admin = await findAdminById(decodedAdmin._id);
+  if (!admin)
+    return sendResponse(
+      reply,
+      401,
+      false,
+      "Sorry, but you are not authorized to perform this action"
+    );
+
+  return sendResponse(
+    reply,
+    200,
+    true,
+    "Your details was fetched successfully",
+    admin
+  );
+};
+
 //Fetch all admins
 export const fetchAdminsHandler = async (
   request: FastifyRequest,

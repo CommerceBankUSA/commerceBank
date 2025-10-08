@@ -1,32 +1,33 @@
-import { FastifyInstance } from 'fastify';
+import { FastifyInstance } from "fastify";
 
 //Handler
 import {
   createAdminHandler,
   fetchAdminsHandler,
+  getAdminHandler,
   sampleAdminCreationHandler,
   updateAdminHandler,
-} from './admin.controller';
+} from "./admin.controller";
 
 //Schemas
-import { adminRef, CreateAdminInput, UpdateAdminInput } from './admin.schema';
-import { generalRef } from '../general/general.schema';
+import { adminRef, CreateAdminInput, UpdateAdminInput } from "./admin.schema";
+import { generalRef } from "../general/general.schema";
 
 export default async function adminRoutes(app: FastifyInstance) {
   //Create new admin
   app.post<{ Body: CreateAdminInput }>(
-    '/create',
+    "/create",
     {
       preHandler: app.authenticateAdmin,
       schema: {
-        tags: ['Admins'],
+        tags: ["Admins"],
         security: [{ bearerAuth: [] }],
-        body: adminRef('createAdminSchema'),
+        body: adminRef("createAdminSchema"),
         response: {
-          201: adminRef('generalAdminResponseSchema'),
-          401: generalRef('unauthorizedSchema'),
-          403: generalRef('forbiddenSchema'),
-          409: generalRef('conflictRequestSchema'),
+          201: adminRef("generalAdminResponseSchema"),
+          401: generalRef("unauthorizedSchema"),
+          403: generalRef("forbiddenSchema"),
+          409: generalRef("conflictRequestSchema"),
         },
       },
     },
@@ -35,34 +36,51 @@ export default async function adminRoutes(app: FastifyInstance) {
 
   //Create sample admin
   app.post<{ Body: CreateAdminInput }>(
-    '/sampleCreate',
+    "/sampleCreate",
     {
       schema: {
-        tags: ['Admins'],
-        body: adminRef('createAdminSchema'),
+        tags: ["Admins"],
+        body: adminRef("createAdminSchema"),
         response: {
-          201: adminRef('generalAdminResponseSchema'),
-          401: generalRef('unauthorizedSchema'),
-          403: generalRef('forbiddenSchema'),
-          409: generalRef('conflictRequestSchema'),
+          201: adminRef("generalAdminResponseSchema"),
+          401: generalRef("unauthorizedSchema"),
+          403: generalRef("forbiddenSchema"),
+          409: generalRef("conflictRequestSchema"),
         },
       },
     },
     sampleAdminCreationHandler
   );
 
-  //Fetch admins
+  //Get logged in admin details
   app.get(
-    '/getAdmins',
+    "/getDetails",
     {
       preHandler: app.authenticateAdmin,
       schema: {
-        tags: ['Admins'],
+        tags: ["Admins"],
         security: [{ bearerAuth: [] }],
         response: {
-          200: adminRef('fetchAdminsResponseSchema'),
-          401: generalRef('unauthorizedSchema'),
-          403: generalRef('forbiddenSchema'),
+          200: adminRef("generalAdminResponseSchema"),
+          401: generalRef("unauthorizedSchema"),
+        },
+      },
+    },
+    getAdminHandler
+  );
+
+  //Fetch admins
+  app.get(
+    "/getAdmins",
+    {
+      preHandler: app.authenticateAdmin,
+      schema: {
+        tags: ["Admins"],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: adminRef("fetchAdminsResponseSchema"),
+          401: generalRef("unauthorizedSchema"),
+          403: generalRef("forbiddenSchema"),
         },
       },
     },
@@ -71,17 +89,17 @@ export default async function adminRoutes(app: FastifyInstance) {
 
   //Update admin
   app.patch<{ Body: UpdateAdminInput }>(
-    '/updateAdmin',
+    "/updateAdmin",
     {
       preHandler: app.authenticateAdmin,
       schema: {
-        tags: ['Admins'],
+        tags: ["Admins"],
         security: [{ bearerAuth: [] }],
-        body: adminRef('updateAdminSchema'),
+        body: adminRef("updateAdminSchema"),
         response: {
-          200: adminRef('generalAdminResponseSchema'),
-          401: generalRef('unauthorizedSchema'),
-          403: generalRef('forbiddenSchema'),
+          200: adminRef("generalAdminResponseSchema"),
+          401: generalRef("unauthorizedSchema"),
+          403: generalRef("forbiddenSchema"),
         },
       },
     },
