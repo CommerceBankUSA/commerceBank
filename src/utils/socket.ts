@@ -74,7 +74,6 @@ export const initSocket = (server: any) => {
         from,
         text,
         timestamp: Date.now(),
-        readBy: [],
       });
 
       io.to(from).emit("messageSent", {
@@ -82,7 +81,6 @@ export const initSocket = (server: any) => {
         to,
         text,
         timestamp: Date.now(),
-        readBy: [],
       });
     });
 
