@@ -18,13 +18,14 @@ export const saveMessage = async ({
   sender,
   receiver,
   text,
+  timestamp,
 }: {
   id: string;
   sender: string;
   receiver: string;
   text: string;
+  timestamp: number;
 }) => {
-  const timestamp = Date.now();
   const messageKey = `msg:${id}`;
   const messageData = JSON.stringify({
     id,

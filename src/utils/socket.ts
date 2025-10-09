@@ -67,20 +67,21 @@ export const initSocket = (server: any) => {
     // Send Message
     socket.on("sendMessage", async ({ from, to, text }) => {
       const id = `${Date.now()}-${from}`;
-      await saveMessage({ id, sender: from, receiver: to, text });
+      const timestamp = Date.now();
+      await saveMessage({ id, sender: from, receiver: to, text, timestamp });
 
       io.to(to).emit("newMessage", {
         id,
         from,
         text,
-        timestamp: Date.now(),
+        timestamp,
       });
 
       io.to(from).emit("messageSent", {
         id,
         to,
         text,
-        timestamp: Date.now(),
+        timestamp,
       });
     });
 
