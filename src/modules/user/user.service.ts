@@ -146,6 +146,8 @@ export const updateOnlineStatus = async (userId: string, status: boolean) => {
 //Get User preview
 export const getUserPreviewById = async (userId: string) => {
   return await UserModel.findById(userId)
-    .select("fullName profilePicture lastSession isOnline isFullyVerified")
+    .select(
+      "fullName email profilePicture lastSession isOnline isFullyVerified"
+    )
     .lean();
 };
