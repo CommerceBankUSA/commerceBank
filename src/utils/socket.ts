@@ -49,6 +49,8 @@ export const initSocket = (server: any) => {
 
     // Join room and track online
     socket.on("joinRoom", async (userId: string, isAdmin: boolean) => {
+      console.log("The userId", userId);
+      console.log("Admin Status", isAdmin);
       if (userId) {
         socket.join(userId);
         onlineUsers.set(userId, socket.id);
