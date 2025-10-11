@@ -48,19 +48,16 @@ export const initSocket = (server: any) => {
     console.log("Socket connected:", socket.id);
 
     // Join room and track online
-    socket.on("joinRoom", async (userId: string, isAdmin: boolean) => {
-      //If it is an admin, update status as true
+    socket.on("joinRoom", async ({ userId, isAdmin }) => {
+      //Admin
       if (userId && isAdmin) {
         await updateAdminStatus(userId);
-
-        //Fetch Conversations and return
         const conversations = await getAllConversations(userId, isAdmin);
         io.to(userId).emit("userConversations", { conversations });
       } else {
         socket.join(userId);
         onlineUsers.set(userId, socket.id);
 
-        //Fetch Notifications and Conversations
         const userNotifications = await getUserNotifications(userId);
         io.to(userId).emit("allNotifications", userNotifications);
 
@@ -123,7 +120,7 @@ export const initSocket = (server: any) => {
     });
 
     //Suspend a user
-    socket.on("suspendUser", async (userId, email, suspended) => {
+    socket.on("suspendUser", async ({ userId, email, suspended }) => {
       const data = { email, isSuspended: suspended };
       const updatedUser = await updateUser(data);
 
