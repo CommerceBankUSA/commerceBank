@@ -49,19 +49,24 @@ export const initSocket = (server: any) => {
 
     // Join room and track online
     socket.on("joinRoom", async (userId: string, isAdmin: boolean) => {
-      console.log("The userId", userId);
-      console.log("Admin Status", isAdmin);
-      if (userId) {
+      //If it is an admin, update status as true
+      if (userId && isAdmin) {
+        await updateAdminStatus(userId);
+
+        //Fetch Conversations and return
+        const conversations = await getAllConversations(userId, isAdmin);
+        io.to(userId).emit("userConversations", { conversations });
+      } else {
         socket.join(userId);
         onlineUsers.set(userId, socket.id);
 
+        //Fetch Notifications and Conversations
         const userNotifications = await getUserNotifications(userId);
         io.to(userId).emit("allNotifications", userNotifications);
 
-        //If it is an admin, update status as true
-        if (isAdmin) {
-          await updateAdminStatus(userId);
-        }
+        const conversations = await getAllConversations(userId, false);
+        io.to(userId).emit("userConversations", { conversations });
+
         await updateOnlineStatus(userId, true);
       }
     });
