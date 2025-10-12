@@ -15,6 +15,7 @@ import {
   saveMessage,
   getAllConversations,
   markAllMessages,
+  deleteMessage,
 } from "../libs/message";
 
 //Utils, Libs and Configs
@@ -48,46 +49,121 @@ export const initSocket = (server: any) => {
     console.log("Socket connected:", socket.id);
 
     // Join room and track online
-    socket.on("joinRoom", async ({ userId, isAdmin }) => {
+    socket.on("joinRoom", async ({ userId, isAdmin, adminConnect }) => {
       //Admin
       if (userId && isAdmin) {
+        //Join and update admin status
+        socket.join(userId);
+        socket.join(adminConnect);
         await updateAdminStatus(userId);
+
+        // Fetch all conversations and emit back
         const conversations = await getAllConversations(userId, isAdmin);
         io.to(userId).emit("userConversations", { conversations });
       } else {
+        //Join, update online status and session
         socket.join(userId);
         onlineUsers.set(userId, socket.id);
+        await updateOnlineStatus(userId, true);
 
+        //Fetch Notifications
         const userNotifications = await getUserNotifications(userId);
         io.to(userId).emit("allNotifications", userNotifications);
 
+        //Fetch conversations
         const conversations = await getAllConversations(userId, false);
         io.to(userId).emit("userConversations", { conversations });
-
-        await updateOnlineStatus(userId, true);
       }
     });
 
     // Send Message
-    socket.on("sendMessage", async ({ from, to, text }) => {
-      const id = `${Date.now()}-${from}`;
-      const timestamp = Date.now();
-      await saveMessage({ id, sender: from, receiver: to, text, timestamp });
+    socket.on(
+      "sendMessage",
+      async (
+        {
+          id,
+          from,
+          to,
+          text,
+        }: { id: string; from: string; to: string; text: string },
+        callback: (response: {
+          success: boolean;
+          message: string;
+          data?: any;
+        }) => void
+      ) => {
+        try {
+          const timestamp = Date.now();
 
-      io.to(to).emit("newMessage", {
-        id,
-        from,
-        text,
-        timestamp,
-      });
+          await saveMessage({
+            id,
+            from,
+            to,
+            text,
+            timestamp,
+          });
 
-      io.to(from).emit("messageSent", {
-        id,
-        to,
-        text,
-        timestamp,
-      });
-    });
+          // Notify receiver
+          io.to(to).emit("newMessage", {
+            id,
+            from,
+            to,
+            text,
+            timestamp,
+            status: "successful",
+          });
+
+          // Acknowledge sender immediately
+          callback({
+            success: true,
+            message: "Message sent successfully",
+            data: {
+              id,
+              to,
+              from,
+              text,
+              timestamp,
+              status: "successful",
+            },
+          });
+        } catch (error) {
+          console.error("sendMessage error:", error);
+          callback({
+            success: false,
+            message: "Failed to send message",
+          });
+        }
+      }
+    );
+
+    //Delete Message
+    socket.on(
+      "deleteMessage",
+      async (
+        {
+          id,
+          from,
+          to,
+        }: {
+          id: string;
+          from: string;
+          to: string;
+        },
+        callback: (response: { success: boolean; message: string }) => void
+      ) => {
+        try {
+          await deleteMessage({ messageId: id, from, to });
+
+          // Notify both users to remove the message from their view
+          io.to(from).emit("messageDeleted", { id });
+
+          callback({ success: true, message: "Message deleted successfully" });
+        } catch (error) {
+          console.error("Failed to delete message:", error);
+          callback({ success: false, message: "Message deletion failed" });
+        }
+      }
+    );
 
     // Typing
     socket.on("typing", ({ to, from, isTyping }) => {

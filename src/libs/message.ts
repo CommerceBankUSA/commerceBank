@@ -15,24 +15,25 @@ const getChatKey = (userA: string, userB: string): string => {
 //Save Messages
 export const saveMessage = async ({
   id,
-  sender,
-  receiver,
+  from,
+  to,
   text,
   timestamp,
 }: {
   id: string;
-  sender: string;
-  receiver: string;
+  from: string;
+  to: string;
   text: string;
   timestamp: number;
 }) => {
   const messageKey = `msg:${id}`;
   const messageData = JSON.stringify({
     id,
-    sender,
-    receiver,
+    from,
+    to,
     text,
     timestamp,
+    status: "successful",
   });
 
   // Save the message with expiry
@@ -40,19 +41,20 @@ export const saveMessage = async ({
     EX: MESSAGE_EXPIRY_SECONDS,
   });
 
-  const chatKey = getChatKey(sender, receiver);
+  const chatKey = getChatKey(from, to);
 
   // Add the message to the sorted set
   await redisClient.zAdd(chatKey, [{ score: timestamp, value: messageKey }]);
 
   // Track this conversation for both users
-  await redisClient.sAdd(`userConversations:${sender}`, receiver);
-  await redisClient.sAdd(`userConversations:${receiver}`, sender);
+  await redisClient.sAdd(`userConversations:${from}`, to);
+  await redisClient.sAdd(`userConversations:${to}`, from);
 
-  // Track unread count for receiver
-  await redisClient.incr(`unreadCount:${receiver}:${sender}`);
+  // Track unread count for Receiver (to)
+  await redisClient.incr(`unreadCount:${to}:${from}`);
 };
 
+//Fetch Conversations
 export const getAllConversations = async (userId: string, isAdmin: boolean) => {
   const userConversations = await redisClient.sMembers(
     `userConversations:${userId}`
@@ -113,6 +115,26 @@ export const getAllConversations = async (userId: string, isAdmin: boolean) => {
     messages: messagesGrouped[id],
     userPreview: isAdmin ? userPreviews[id] : undefined,
   }));
+};
+
+//Delete Messages
+export const deleteMessage = async ({
+  messageId,
+  from,
+  to,
+}: {
+  messageId: string;
+  from: string;
+  to: string;
+}) => {
+  const messageKey = `msg:${messageId}`;
+  const chatKey = getChatKey(from, to);
+
+  // Delete the message content
+  await redisClient.del(messageKey);
+
+  // Remove it from the sorted set
+  await redisClient.zRem(chatKey, messageKey);
 };
 
 //Mark all messages as read
