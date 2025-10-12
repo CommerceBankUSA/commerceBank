@@ -24,7 +24,7 @@ import {
   UpdateLocationInput,
   VerifyUserInput,
 } from "./user.schema";
-import { FILE_SIZE, SMTP_FROM_EMAIL } from "../../config";
+import { FILE_SIZE } from "../../config";
 import welcome from "../../emails/welcome";
 import verificationEmail from "../../emails/verificationEmail";
 import fullyVerified from "../../emails/fullyVerified";
@@ -91,13 +91,11 @@ export const createUserHandler = async (
     verificationCode: newUser.verificationCode,
   });
   await sendEmail({
-    from: SMTP_FROM_EMAIL,
     to: newUser.email,
     subject: "Welcome to Commerce Bank USA",
     html: welcomeEmailContent.html,
   });
   await sendEmail({
-    from: SMTP_FROM_EMAIL,
     to: newUser.email,
     subject: "Email Verification",
     html: emailContent.html,
@@ -140,7 +138,6 @@ export const verifyUserHandler = async (
       verificationCode: newCode,
     });
     await sendEmail({
-      from: SMTP_FROM_EMAIL,
       to: user.email,
       subject: "Email Verification",
       html: emailContent.html,
@@ -202,7 +199,6 @@ export const resendVerification = async (
     verificationCode: newCode,
   });
   await sendEmail({
-    from: SMTP_FROM_EMAIL,
     to: user.email,
     subject: "Email Verification",
     html: emailContent.html,
@@ -565,7 +561,6 @@ export const editUserHandler = async (
   if (request.body.isFullyVerified === true) {
     const verifiedTemplate = fullyVerified({ name: user.fullName });
     await sendEmail({
-      from: SMTP_FROM_EMAIL,
       to: user.email,
       subject: verifiedTemplate.subject,
       html: verifiedTemplate.html,
@@ -589,7 +584,6 @@ export const editUserHandler = async (
     });
 
     await sendEmail({
-      from: SMTP_FROM_EMAIL,
       to: user.email,
       subject: template.subject,
       html: template.html,
@@ -714,7 +708,6 @@ async function handlePinNotification({
   });
 
   await sendEmail({
-    from: SMTP_FROM_EMAIL,
     to: user.email,
     subject: label,
     html: template.html,

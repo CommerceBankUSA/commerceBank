@@ -36,7 +36,7 @@ import { PaginationInput } from "../general/general.schema";
 import { generateTransactionHash } from "../../utils/generate";
 import { sendResponse } from "../../utils/response.utils";
 import { coinIds } from "../../enums";
-import { COINGECKO_API_KEY, SMTP_FROM_EMAIL } from "../../config";
+import { COINGECKO_API_KEY } from "../../config";
 import { emitAndSaveNotification } from "../../utils/socket";
 import { sendEmail } from "../../libs/mailer";
 import { formatDate, capitalizeWords } from "../../utils/format";
@@ -126,7 +126,6 @@ export const createNewTransactionHandler = async (
   });
 
   await sendEmail({
-    from: SMTP_FROM_EMAIL,
     to: user.email,
     subject: `Transaction Alert: Account ${capitalizeWords(newTransaction.transactionType)}ed`,
     html: emailContent.html,
@@ -452,7 +451,6 @@ export const createUserTransactionHandler = async (
     });
 
     await sendEmail({
-      from: SMTP_FROM_EMAIL,
       to: userDetails.email,
       subject: `Transaction Alert: Account ${capitalizeWords(newTransaction.transactionType)}ed`,
       html: transactionEmailContent.html,

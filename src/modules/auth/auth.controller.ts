@@ -21,7 +21,6 @@ import { sendResponse } from "../../utils/response.utils";
 import { customAlphabet } from "nanoid";
 import { sendEmail } from "../../libs/mailer";
 import { encrypt } from "../../utils/encrypt";
-import { SMTP_FROM_EMAIL } from "../../config";
 
 //Email Templates
 import otp from "../../emails/otp";
@@ -102,7 +101,6 @@ export const loginHandler = async (
       otpType: "Login Verification",
     });
     await sendEmail({
-      from: SMTP_FROM_EMAIL,
       to: user.email,
       subject: "Login Verification",
       html: emailContent.html,
@@ -156,7 +154,6 @@ export const validateLoginHandler = async (
   }).html;
 
   await sendEmail({
-    from: SMTP_FROM_EMAIL,
     to: user.email,
     subject: "New Login to Your Commerce Bank USA Account",
     html: loginTemplate,
@@ -207,7 +204,6 @@ export const sendPasswordReset = async (
     verificationCode: randomSixNumbers,
   });
   await sendEmail({
-    from: SMTP_FROM_EMAIL,
     to: user.email,
     subject: "Reset Password Verification",
     html: emailContent.html,

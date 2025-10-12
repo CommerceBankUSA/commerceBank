@@ -21,7 +21,6 @@ import {
 //Utils, Libs and Configs
 import { allowedOrigins } from "./cors";
 import { sendEmail } from "../libs/mailer";
-import { SMTP_FROM_EMAIL } from "../config";
 
 //Emails
 import suspensionEmail from "../emails/suspension";
@@ -207,7 +206,6 @@ export const initSocket = (server: any) => {
             : restoredEmail({ name: updatedUser.fullName }).html;
 
         await sendEmail({
-          from: SMTP_FROM_EMAIL,
           to: updatedUser.email,
           subject:
             suspended === true
