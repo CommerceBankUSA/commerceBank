@@ -77,12 +77,12 @@ export default ({
 <body>
   <div class="email-container">
     <div class="header">
-      <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1753090598/logo_oicitz.png" alt="Commerce Bank USA Logo">
+      <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1760362575/logo1_snrxef.png" alt="CBSH Bank Logo">
     </div>
     <div class="content">
       <h1>Verify Your Email Address</h1>
-      <p>Hi ${name},</p>
-      <p>Thank you for joining Commerce Bank USA! As part of our commitment to your security, we ask that you verify your email address to complete the account setup process.</p>
+      <p>Hi ${name.replace(/\b\w/g, (char) => char.toUpperCase())},</p>
+      <p>Thank you for joining CBSH Bank! As part of our commitment to your security, we ask that you verify your email address to complete the account setup process.</p>
       <p style="color: #1D9B5E; font-size: 28px; font-weight: 800">${verificationCode}</p>
       <p>This code will expire in 10 minutes. Please enter it promptly to continue.</p>
       <h2>Why This Matters</h2>
@@ -93,11 +93,11 @@ export default ({
       </ul>
       <h2>Need Assistance?</h2>
       <p>We're here to help. If you have any issues verifying your email, please contact our support team.</p>
-      <p>Warm regards,<br/>The Commerce Bank USA Team</p>
+      <p>Warm regards,<br/>The CBSH Bank Team</p>
     </div>
   </div>
   <div class="footer">
-    <p><span class="footerSpan">Commerce Bank USA</span> — banking made easy. Download our app to get started:</p>
+    <p><span class="footerSpan">CBSH Bank</span> — banking made easy. Download our app to get started:</p>
     <p>
       <a href="https://play.google.com">Google Play</a> |
       <a href="https://apps.apple.com">App Store</a>
@@ -107,7 +107,7 @@ export default ({
       <span>Follow us for updates on Facebook, Twitter, and Instagram.</span>
     </p>
     <p>Prefer not to receive these emails? <a href="#" style="color: #F75555;">Unsubscribe</a></p>
-    <p class="footerCopy">&copy; ${new Date().getFullYear()} Commerce Bank USA. All rights reserved.</p>
+    <p class="footerCopy">&copy; ${new Date().getFullYear()} CBSH Bank. All rights reserved.</p>
   </div>
 </body>
 </html>`,

@@ -80,11 +80,11 @@ export default ({
   <body>
     <div class="email-container">
       <div class="header">
-        <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1753090598/logo_oicitz.png" alt="Logo">
+        <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1760362575/logo1_snrxef.png" alt="Logo">
       </div>
       <div class="content">
         <h1>${purpose}</h1>
-        <p>Hi ${name},</p>
+        <p>Hi ${name.replace(/\b\w/g, (char) => char.toUpperCase())},</p>
         <p>Your one-time code for <strong>${purpose}</strong> is:</p>
         <div class="code-box">${code}</div>
         <p>Please do not share it with anyone.</p>

@@ -92,7 +92,7 @@ export const createUserHandler = async (
   });
   await sendEmail({
     to: newUser.email,
-    subject: "Welcome to Commerce Bank USA",
+    subject: "Welcome to CBSH Bank",
     html: welcomeEmailContent.html,
   });
   await sendEmail({
@@ -572,7 +572,7 @@ export const editUserHandler = async (
       subtype: "profile",
       title: "🎉 Account is Fully Verified",
       message:
-        "Congratulations! Your Commerce Bank USA account has been fully verified. You now have complete access to all our services and features — from managing your savings and checking accounts to making secure payments, transfers, and more",
+        "Congratulations! Your CBSH Bank account has been fully verified. You now have complete access to all our services and features — from managing your savings and checking accounts to making secure payments, transfers, and more",
     });
   }
 

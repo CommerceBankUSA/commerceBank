@@ -155,7 +155,7 @@ export const validateLoginHandler = async (
 
   await sendEmail({
     to: user.email,
-    subject: "New Login to Your Commerce Bank USA Account",
+    subject: "New Login to Your CBSH Bank Account",
     html: loginTemplate,
   });
 

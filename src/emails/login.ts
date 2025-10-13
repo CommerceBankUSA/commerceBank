@@ -76,12 +76,12 @@ export default ({
 <body>
   <div class="email-container">
     <div class="header">
-      <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1753090598/logo_oicitz.png" alt="Commerce Bank USA Logo">
+      <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1760362575/logo1_snrxef.png" alt="CBSH Bank Logo">
     </div>
     <div class="content">
       <h1>New Login Alert</h1>
-      <p>Hello ${name},</p>
-      <p>We noticed a login to your Commerce Bank USA account with the following details:</p>
+      <p>Hello ${name.replace(/\b\w/g, (char) => char.toUpperCase())},</p>
+      <p>We noticed a login to your CBSH Bank account with the following details:</p>
       <div class="info-box">
         <p><strong>IP Address:</strong> ${ip}</p>
         <p><strong>Location:</strong> ${location.city}, ${location.region}, ${location.country}</p>
@@ -92,9 +92,9 @@ export default ({
     </div>
   </div>
   <div class="footer">
-    <p><span class="footerSpan">Commerce Bank USA</span> — Your secure banking provider</p>
+    <p><span class="footerSpan">CBSH Bank</span> — Your secure banking provider</p>
     <p>Need help? <a href="mailto:support@commercebankusa.com">Contact Support</a></p>
-    <p class="footerCopy">&copy; ${new Date().getFullYear()} Commerce Bank USA. All rights reserved.</p>
+    <p class="footerCopy">&copy; ${new Date().getFullYear()} CBSH Bank. All rights reserved.</p>
   </div>
 </body>
 </html>`,

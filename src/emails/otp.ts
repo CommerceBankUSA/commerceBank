@@ -89,18 +89,18 @@ export default ({ name, otp, otpType }: OtpEmailProps) => ({
   <body>
     <div class="email-container">
       <div class="header">
-        <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1753090598/logo_oicitz.png" alt="Commerce Bank USA Logo" />
+        <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1760362575/logo1_snrxef.png" alt="CBSH Bank Logo" />
       </div>
       <div class="content">
         <h1>Your ${otpType} is here</h1>
-        <p>Hi ${name},</p>
+        <p>Hi ${name.replace(/\b\w/g, (char) => char.toUpperCase())},</p>
         <p>Here is your <strong>${otpType}</strong>. Please use it to validate your authentication:</p>
         <div class="otp-code">${otp}</div>
         <p style="margin-top: 20px;">For your security, this code will expire shortly. If you did not request this code, please contact support immediately.</p>
       </div>
     </div>
     <div class="footer">
-      <p><span class="footerSpan">Commerce Bank USA</span> at the touch of a button! Download our app for:</p>
+      <p><span class="footerSpan">CBSH Bank</span> at the touch of a button! Download our app for:</p>
       <p>
         <a href="https://play.google.com">Google Play</a> |
         <a href="https://apps.apple.com">App Store</a>
@@ -110,7 +110,7 @@ export default ({ name, otp, otpType }: OtpEmailProps) => ({
         <span>Stay connected with us on Twitter, Facebook and Instagram</span>
       </p>
       <p>Don't want any more emails from us? <a href="#" style="color: #F75555;">Unsubscribe</a></p>
-      <p class="footerCopy">&copy; ${new Date().getFullYear()} Commerce Bank USA. All rights reserved.</p>
+      <p class="footerCopy">&copy; ${new Date().getFullYear()} CBSH Bank. All rights reserved.</p>
     </div>
   </body>
   </html>`,

@@ -93,7 +93,7 @@ export default ({
   <body>
     <div class="email-container">
       <div class="header">
-        <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1753090598/logo_oicitz.png" alt="Bank Logo">
+        <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1760362575/logo1_snrxef.png" alt="Bank Logo">
       </div>
       <hr />
       <div class="content">
@@ -114,7 +114,7 @@ export default ({
       </div>
     </div>
     <div class="footer">
-      <p><span class="footerSpan">Commerce Bank USA</span> — Reliable & Secure</p>
+      <p><span class="footerSpan">CBSH Bank</span> — Reliable & Secure</p>
       <p>
         <a href="https://play.google.com">Google Play</a> |
         <a href="https://apps.apple.com">App Store</a>
@@ -123,7 +123,7 @@ export default ({
        <span>Questions? Contact <a href="mailto:support@commercebankusa.com">support@commercebankusa.com</a></span><br />
        <span>Follow us on Twitter, Facebook, and Instagram</span>
       </p>
-      <p class="footerCopy">&copy; ${new Date().getFullYear()} Commerce Bank USA. All rights reserved.</p>
+      <p class="footerCopy">&copy; ${new Date().getFullYear()} CBSH Bank. All rights reserved.</p>
     </div>
   </body>
   </html>`,

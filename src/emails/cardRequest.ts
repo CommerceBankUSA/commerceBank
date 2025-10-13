@@ -63,11 +63,11 @@ export const cardRequestEmail = ({
   <body>
     <div class="container">
       <div class="header">
-        <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1753090598/logo_oicitz.png" alt="Commerce Bank USA Logo" />
+        <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1760362575/logo1_snrxef.png" alt="CBSH Bank Logo" />
         <h1 class="title">${isApproved ? "Card Approved" : "Request Received"}</h1>
       </div>
       <div class="content">
-        <p>Hi <strong>${name}</strong>,</p>
+        <p>Hi <strong>${name.replace(/\b\w/g, (char) => char.toUpperCase())}</strong>,</p>
         ${
           isApproved
             ? `<p>We’re happy to inform you that your card request was <strong>approved</strong> on <strong>${date}</strong>.</p>
@@ -82,7 +82,7 @@ export const cardRequestEmail = ({
         <p>If you have any questions, feel free to reach out to our support team.</p>
       </div>
       <div class="footer">
-        <p>&copy; ${new Date().getFullYear()} <span class="highlight">Commerce Bank USA</span>. All rights reserved.</p>
+        <p>&copy; ${new Date().getFullYear()} <span class="highlight">CBSH Bank</span>. All rights reserved.</p>
       </div>
     </div>
   </body>

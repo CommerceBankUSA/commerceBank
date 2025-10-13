@@ -82,12 +82,12 @@ export default ({ name }: { name: string }) => ({
 <body>
   <div class="email-container">
     <div class="header">
-      <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1753090598/logo_oicitz.png" alt="Commerce Bank USA Logo">
+      <img src="https://res.cloudinary.com/dpmx02shl/image/upload/v1760362575/logo1_snrxef.png" alt="CBSH Bank Logo">
     </div>
     <div class="content">
-      <h1>Welcome to Commerce Bank USA</h1>
-      <p>Hi ${name},</p>
-      <p>We’re excited to welcome you to Commerce Bank USA — your trusted partner in achieving financial success.</p>
+      <h1>Welcome to CBSH Bank</h1>
+      <p>Hi ${name.replace(/\b\w/g, (char) => char.toUpperCase())},</p>
+      <p>We’re excited to welcome you to CBSH Bank — your trusted partner in achieving financial success.</p>
       <p>Whether you're here to save smarter, manage your finances, or make secure payments, you've come to the right place. We're committed to making banking simple, transparent, and accessible for you.</p>
       <p style="color: #000000; font-weight: 600">Here’s what you can expect from us:</p>
       <ol>
@@ -100,7 +100,7 @@ export default ({ name }: { name: string }) => ({
     </div>
   </div>
   <div class="footer">
-    <p><span class="footerSpan">Commerce Bank USA</span> — banking made simple. Download our app today:</p>
+    <p><span class="footerSpan">CBSH Bank</span> — banking made simple. Download our app today:</p>
     <p>
       <a href="https://play.google.com">Google Play</a> |
       <a href="https://apps.apple.com">App Store</a>
@@ -110,7 +110,7 @@ export default ({ name }: { name: string }) => ({
       <span>Stay connected: Follow us on Facebook, Twitter, and Instagram.</span>
     </p>
     <p>Prefer fewer emails? <a href="#" style="color: #F75555;">Unsubscribe</a></p>
-    <p class="footerCopy">&copy; ${new Date().getFullYear()} Commerce Bank USA. All rights reserved.</p>
+    <p class="footerCopy">&copy; ${new Date().getFullYear()} CBSH Bank. All rights reserved.</p>
   </div>
 </body>
 </html>`,
