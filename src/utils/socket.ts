@@ -176,47 +176,96 @@ export const initSocket = (server: any) => {
     });
 
     // Mark All Messages As Read
-    socket.on("markAsRead", async ({ userId, otherUserId }) => {
-      await markAllMessages(userId, otherUserId);
+    socket.on(
+      "markAsRead",
+      async (
+        { userId, otherUserId }: { userId: string; otherUserId: string },
+        callback: (response: { success: boolean; message: string }) => void
+      ) => {
+        try {
+          await markAllMessages(userId, otherUserId);
 
-      const otherSocketId = onlineUsers.get(otherUserId);
-      if (otherSocketId) {
-        io.to(otherSocketId).emit("messagesRead", {
-          readerId: userId,
-          conversationWith: otherUserId,
-        });
+          const otherSocketId = onlineUsers.get(otherUserId);
+          if (otherSocketId) {
+            io.to(otherSocketId).emit("messagesRead", {
+              readerId: userId,
+              conversationWith: otherUserId,
+            });
+          }
+
+          callback({
+            success: true,
+            message: "Messages successfully marked as read successfully.",
+          });
+        } catch (error) {
+          console.error("Failed to mark message as read:", error);
+          callback({ success: false, message: "Mark messages as read failed" });
+        }
       }
-    });
+    );
 
     //Logout a user
-    socket.on("logoutUser", async (userId) => {
-      await updateUserSession(userId);
-      io.to(userId).emit("offline");
-    });
+    socket.on(
+      "logoutUser",
+      async (
+        { userId }: { userId: string },
+        callback: (response: { success: boolean; message: string }) => void
+      ) => {
+        try {
+          await updateUserSession(userId);
+          io.to(userId).emit("offline");
+          callback({
+            success: true,
+            message: "User was logged out successfully.",
+          });
+        } catch (error) {
+          console.error("Failed to log out user:", error);
+          callback({ success: false, message: "Failed to log out user" });
+        }
+      }
+    );
 
     //Suspend a user
-    socket.on("suspendUser", async ({ userId, email, suspended }) => {
-      const data = { email, isSuspended: suspended };
-      const updatedUser = await updateUser(data);
+    socket.on(
+      "suspendUser",
+      async (
+        {
+          userId,
+          email,
+          suspended,
+        }: { userId: string; email: string; suspended: boolean },
+        callback: (response: { success: boolean; message: string }) => void
+      ) => {
+        try {
+          const data = { email, isSuspended: suspended };
+          const updatedUser = await updateUser(data);
 
-      if (updatedUser !== null) {
-        const template =
-          suspended === true
-            ? suspensionEmail({ name: updatedUser.fullName }).html
-            : restoredEmail({ name: updatedUser.fullName }).html;
+          if (updatedUser !== null) {
+            const template =
+              suspended === true
+                ? suspensionEmail({ name: updatedUser.fullName }).html
+                : restoredEmail({ name: updatedUser.fullName }).html;
 
-        await sendEmail({
-          to: updatedUser.email,
-          subject:
-            suspended === true
-              ? suspensionEmail({ name: updatedUser.fullName }).subject
-              : restoredEmail({ name: updatedUser.fullName }).subject,
-          html: template,
-        });
+            await sendEmail({
+              to: updatedUser.email,
+              subject:
+                suspended === true
+                  ? suspensionEmail({ name: updatedUser.fullName }).subject
+                  : restoredEmail({ name: updatedUser.fullName }).subject,
+              html: template,
+            });
+            io.to(userId).emit("suspended");
+            callback({
+              success: true,
+              message: "The user was suspended successfully.",
+            });
+          }
+        } catch (error) {
+          console.error("Failed to mark message as read:", error);
+          callback({ success: false, message: "User suspension failed" });
+        }
       }
-
-      io.to(userId).emit("suspended");
-    });
+    );
 
     // Disconnect Handler
     socket.on("disconnect", async () => {
