@@ -154,6 +154,7 @@ export const initSocket = (server: any) => {
 
           // Notify both users to remove the message from their view
           io.to(from).emit("messageDeleted", { id });
+          io.to(to).emit("messageDeleted", { id });
 
           callback({ success: true, message: "Message deleted successfully" });
         } catch (error) {
