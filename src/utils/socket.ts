@@ -52,13 +52,12 @@ export const initSocket = (server: any) => {
       //Admin
       if (userId && isAdmin) {
         //Join and update admin status
-        socket.join(userId);
         socket.join(adminConnect);
         await updateAdminStatus(userId);
 
         // Fetch all conversations and emit back
         const conversations = await getAllConversations(userId, isAdmin);
-        io.to(userId).emit("userConversations", { conversations });
+        io.to(adminConnect).emit("userConversations", { conversations });
       } else {
         //Join, update online status and session
         socket.join(userId);
