@@ -30,7 +30,7 @@ export default ({
       padding-bottom: 20px;
     }
     .header img {
-      width: 30px;
+      width: 48px;
     }
     .content h1 {
       color: #000000;
@@ -103,7 +103,7 @@ export default ({
       <a href="https://apps.apple.com">App Store</a>
     </p>
     <p>
-      <span>Need help? Contact us at <a href="mailto:support@commercebankusa.com">support@commercebankusa.com</a></span><br />
+      <span>Need help? Contact us at <a href="mailto:support@cbshbank.com">support@cbshbank.com</a></span><br />
       <span>Follow us for updates on Facebook, Twitter, and Instagram.</span>
     </p>
     <p>Prefer not to receive these emails? <a href="#" style="color: #F75555;">Unsubscribe</a></p>

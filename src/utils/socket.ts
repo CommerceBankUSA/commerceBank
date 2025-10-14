@@ -56,7 +56,7 @@ export const initSocket = (server: any) => {
         await updateAdminStatus(userId);
 
         // Fetch all conversations and emit back
-        const conversations = await getAllConversations(userId, isAdmin);
+        const conversations = await getAllConversations(adminConnect, isAdmin);
         io.to(adminConnect).emit("userConversations", { conversations });
       } else {
         //Join, update online status and session

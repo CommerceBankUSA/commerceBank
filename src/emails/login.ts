@@ -33,7 +33,7 @@ export default ({
       padding: 20px;
     }
     .header img {
-      width: 30px;
+      width: 48px;
     }
     .content h1 {
       font-size: 24px;
@@ -88,12 +88,12 @@ export default ({
         <p><strong>Device:</strong> ${userAgent}</p>
         <p><strong>Date & Time:</strong> ${date}</p>
       </div>
-      <p>If this was you, no further action is needed. If not, please secure your account immediately by resetting your password, or contact support: <span class="footerSpan" style="color: #1D9B5E">support@commercebankusa.com</span></p>
+      <p>If this was you, no further action is needed. If not, please secure your account immediately by resetting your password, or contact support: <span class="footerSpan" style="color: #1D9B5E">support@cbshbank.com</span></p>
     </div>
   </div>
   <div class="footer">
     <p><span class="footerSpan">CBSH Bank</span> — Your secure banking provider</p>
-    <p>Need help? <a href="mailto:support@commercebankusa.com">Contact Support</a></p>
+    <p>Need help? <a href="mailto:support@cbshbank.com">Contact Support</a></p>
     <p class="footerCopy">&copy; ${new Date().getFullYear()} CBSH Bank. All rights reserved.</p>
   </div>
 </body>

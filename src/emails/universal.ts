@@ -32,7 +32,7 @@ export default ({
         padding-bottom: 20px;
       }
       .header img {
-        width: 30px;
+        width: 48px;
       }
       .content h1 {
         color: #000000;

@@ -38,8 +38,8 @@ export const cardRequestEmail = ({
         margin-bottom: 24px;
       }
       .header img {
-        width: 48px;
-      }
+      width: 60px;
+    }
       .title {
         font-size: 22px;
         color: ${isApproved ? "#10b981" : primaryColor};
