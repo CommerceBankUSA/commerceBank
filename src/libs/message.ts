@@ -139,6 +139,6 @@ export const deleteMessage = async ({
 
 //Mark all messages as read
 export const markAllMessages = async (userId: string, otherUserId: string) => {
-  const unreadKey = `unread:${userId}:${otherUserId}`;
-  await redisClient.del(unreadKey);
+  const unreadKey = `unreadCount:${userId}:${otherUserId}`;
+  await redisClient.set(unreadKey, "0");
 };
