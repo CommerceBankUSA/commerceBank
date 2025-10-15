@@ -112,24 +112,28 @@ export const initSocket = (server: any) => {
           });
 
           // Acknowledge sender immediately
-          callback({
-            success: true,
-            message: "Message sent successfully",
-            data: {
-              id,
-              to,
-              from,
-              text,
-              timestamp,
-              status: "successful",
-            },
-          });
+          if (typeof callback === "function") {
+            callback({
+              success: true,
+              message: "Message sent successfully",
+              data: {
+                id,
+                to,
+                from,
+                text,
+                timestamp,
+                status: "successful",
+              },
+            });
+          }
         } catch (error) {
           console.error("sendMessage error:", error);
-          callback({
-            success: false,
-            message: "Failed to send message",
-          });
+          if (typeof callback === "function") {
+            callback({
+              success: false,
+              message: "Failed to send message",
+            });
+          }
         }
       }
     );
@@ -156,10 +160,17 @@ export const initSocket = (server: any) => {
           io.to(from).emit("messageDeleted", { id });
           io.to(to).emit("messageDeleted", { id });
 
-          callback({ success: true, message: "Message deleted successfully" });
+          if (typeof callback === "function") {
+            callback({
+              success: true,
+              message: "Message deleted successfully",
+            });
+          }
         } catch (error) {
           console.error("Failed to delete message:", error);
-          callback({ success: false, message: "Message deletion failed" });
+          if (typeof callback === "function") {
+            callback({ success: false, message: "Message deletion failed" });
+          }
         }
       }
     );
@@ -192,14 +203,20 @@ export const initSocket = (server: any) => {
               conversationWith: otherUserId,
             });
           }
-
-          callback({
-            success: true,
-            message: "Messages successfully marked as read successfully.",
-          });
+          if (typeof callback === "function") {
+            callback({
+              success: true,
+              message: "Messages successfully marked as read successfully.",
+            });
+          }
         } catch (error) {
+          if (typeof callback === "function") {
+            callback({
+              success: false,
+              message: "Mark messages as read failed",
+            });
+          }
           console.error("Failed to mark message as read:", error);
-          callback({ success: false, message: "Mark messages as read failed" });
         }
       }
     );
@@ -214,13 +231,17 @@ export const initSocket = (server: any) => {
         try {
           await updateUserSession(userId);
           io.to(userId).emit("offline");
-          callback({
-            success: true,
-            message: "User was logged out successfully.",
-          });
+          if (typeof callback === "function") {
+            callback({
+              success: true,
+              message: "User was logged out successfully.",
+            });
+          }
         } catch (error) {
+          if (typeof callback === "function") {
+            callback({ success: false, message: "Failed to log out user" });
+          }
           console.error("Failed to log out user:", error);
-          callback({ success: false, message: "Failed to log out user" });
         }
       }
     );
@@ -255,14 +276,18 @@ export const initSocket = (server: any) => {
               html: template,
             });
             io.to(userId).emit("suspended");
-            callback({
-              success: true,
-              message: "The user was suspended successfully.",
-            });
+            if (typeof callback === "function") {
+              callback({
+                success: true,
+                message: "The user was suspended successfully.",
+              });
+            }
           }
         } catch (error) {
+          if (typeof callback === "function") {
+            callback({ success: false, message: "User suspension failed" });
+          }
           console.error("Failed to mark message as read:", error);
-          callback({ success: false, message: "User suspension failed" });
         }
       }
     );
