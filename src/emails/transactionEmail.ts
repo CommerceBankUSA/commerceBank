@@ -42,7 +42,7 @@ export default ({
         padding-bottom: 20px;
       }
       .header img {
-        width: 48px;
+        width: 60px;
         text-align: center;
         margin: 0 auto;
       }

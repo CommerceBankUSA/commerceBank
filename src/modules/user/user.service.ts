@@ -75,15 +75,21 @@ export const fetchUser = async (value: string) => {
 
 //Update User Details
 export const updateUser = async (input: EditUserInput) => {
-  const { email, password, ...rest } = input;
+  const { email, password, isSuspended, ...rest } = input;
 
   // Prepare update object
   const updateFields: Partial<typeof input> = { ...rest };
 
-  // If password is provided, encryptedPassword
+  // If password is provided, encrypt it
   if (password) {
     const hashedPassword = encrypt(password);
     updateFields.encryptedPassword = hashedPassword;
+  }
+
+  // Handle suspended date logic manually
+  if (typeof isSuspended === "boolean") {
+    updateFields.isSuspended = isSuspended;
+    updateFields.suspendedDate = isSuspended ? new Date() : null;
   }
 
   const updatedUser = await UserModel.findOneAndUpdate(

@@ -170,20 +170,6 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-//Adding of Suspension Date
-userSchema.pre("save", function (next) {
-  if (this.isModified("isSuspended") && this.isSuspended === true) {
-    this.suspendedDate = new Date();
-  }
-
-  // Optional: clear the date if reactivated
-  if (this.isModified("isSuspended") && this.isSuspended === false) {
-    this.suspendedDate = null;
-  }
-
-  next();
-});
-
 // Methods
 // Comparing passwords
 userSchema.methods.comparePassword = async function (

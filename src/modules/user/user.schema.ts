@@ -145,6 +145,7 @@ const editUserSchema = z.object({
     })
     .optional(),
   encryptedPassword: z.string().optional(),
+  suspendedDate: z.date().optional().nullable(),
 });
 
 const fetchUserSchema = z.object({

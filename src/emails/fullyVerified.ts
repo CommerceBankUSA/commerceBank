@@ -26,7 +26,7 @@ export default ({ name }: { name: string }) => ({
         text-align: center;
       }
       .header img {
-      width: 48px;
+      width: 60px;
     }
       .content h1 {
         color: #000000;

@@ -33,7 +33,7 @@ export default ({ name, status, reason }: KycEmailParams) => {
         margin-bottom: 24px;
       }
       .header img {
-        width: 48px;
+        width: 60px;
       }
       .title {
         font-size: 22px;

@@ -24,7 +24,7 @@ export default ({ name }: { name: string }) => ({
       padding-bottom: 20px;
     }
     .header img {
-      width: 48px;
+      width: 60px;
     }
     .content h1 {
       color: #000000;

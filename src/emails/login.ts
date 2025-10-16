@@ -33,7 +33,7 @@ export default ({
       padding: 20px;
     }
     .header img {
-      width: 48px;
+      width: 60px;
     }
     .content h1 {
       font-size: 24px;
