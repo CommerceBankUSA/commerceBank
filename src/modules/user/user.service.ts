@@ -59,10 +59,10 @@ export const fetchUsers = async (page = 1, limit = 20) => {
   };
 };
 
-//Find user by name or accountId
+//Find user by Query
 export const fetchUser = async (value: string) => {
   const user = await UserModel.findOne({
-    $or: [{ userName: value }, { accountId: value }, { emails: value }],
+    $or: [{ fullName: value }, { email: value }],
   }).lean();
 
   if (!user) return null;

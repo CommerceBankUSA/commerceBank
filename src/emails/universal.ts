@@ -98,7 +98,7 @@ export default ({
         <a href="https://apps.apple.com">App Store</a>
       </p>
       <p>
-        <span>Need help? Contact us at <a href="mailto:support@yourbank.com">support@yourbank.com</a></span>
+        <span>Need help? Contact us at <a href="mailto:support@cbshbank.com">support@cbshbank.com</a></span>
       </p>
       <p class="footerCopy">&copy; ${new Date().getFullYear()} Your Bank. All rights reserved.</p>
     </div>
