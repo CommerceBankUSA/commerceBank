@@ -63,6 +63,9 @@ const createUserTransactionSchema = createTransactionSchema.extend({
   notification: z.boolean({
     required_error: "Notification is required",
   }),
+  level: z.string({
+    required_error: "Level is required",
+  }),
 });
 
 const editTransactionSchema = z.object({
