@@ -21,13 +21,14 @@ export const createNewTransaction = async (
   };
 
   if (
-    transactionData.details?.recipient &&
+    transactionData.details &&
+    transactionData.details.recipient &&
     mongoose.Types.ObjectId.isValid(transactionData.details.recipient)
   ) {
     transactionData.details.recipient = new mongoose.Types.ObjectId(
       transactionData.details.recipient
     );
-  } else {
+  } else if (transactionData.details) {
     transactionData.details.recipient = null;
   }
 

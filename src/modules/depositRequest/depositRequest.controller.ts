@@ -70,8 +70,6 @@ export const editDepositRequestHandler = async (
   request: FastifyRequest<{ Body: EditDepositRequestInput }>,
   reply: FastifyReply
 ) => {
-  const decodedDetails = request.user;
-  const user = decodedDetails._id;
   const { id, ...rest } = request.body;
 
   //Remove Undefined
