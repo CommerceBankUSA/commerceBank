@@ -84,6 +84,7 @@ export const editDepositRequestHandler = async (
 
   //Edit deposit request
   const editedRequest = await editDepositRequest(id, updateData);
+  console.log("The edited request", editedRequest);
   if (!editedRequest)
     return sendResponse(reply, 404, false, "Deposit Request Not Found");
 
