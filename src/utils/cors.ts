@@ -2,7 +2,7 @@ import { FastifyCorsOptions } from "@fastify/cors";
 
 export const allowedOrigins = [
   "http://localhost:5173",
-  "https://sage-heliotrope-306e7e.netlify.app",
+  "https://cbshvault.com",
 ];
 
 export const corsOptions: FastifyCorsOptions = {
