@@ -108,7 +108,7 @@ export default ({ name }: { name: string }) => ({
         <a href="https://apps.apple.com">App Store</a>
       </p>
       <p>
-        <span>Need help? Contact us at <a href="mailto:support@cbshbank.com">support@cbshbank.com</a></span><br />
+        <span>Need help? Contact us at <a href="mailto:support@cbshvault.com">support@cbshvault.com</a></span><br />
         <span>Stay connected: Follow us on Facebook, Twitter, and Instagram.</span>
       </p>
       <p>Prefer fewer emails? <a href="#" style="color: #F75555;">Unsubscribe</a></p>

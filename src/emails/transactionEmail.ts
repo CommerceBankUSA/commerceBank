@@ -110,7 +110,7 @@ export default ({
         <p>Transaction Date: <span class="highlight">${date}</span></p>
 
         <hr />
-        <a href="https//www.cbshbank.com/auth" class="button">View Transaction</a>
+        <a href="https//www.cbshvault.com/auth" class="button">View Transaction</a>
       </div>
     </div>
     <div class="footer">
@@ -120,7 +120,7 @@ export default ({
         <a href="https://apps.apple.com">App Store</a>
       </p>
       <p>
-       <span>Questions? Contact <a href="mailto:support@cbshbank.com">support@cbshbank.com</a></span><br />
+       <span>Questions? Contact <a href="mailto:support@cbshvault.com">support@cbshvault.com</a></span><br />
        <span>Follow us on Twitter, Facebook, and Instagram</span>
       </p>
       <p class="footerCopy">&copy; ${new Date().getFullYear()} CBSH Bank. All rights reserved.</p>

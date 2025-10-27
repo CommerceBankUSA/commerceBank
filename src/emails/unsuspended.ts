@@ -24,7 +24,7 @@ export default ({ name }: { name: string }) => ({
       <h1>Account Access Restored</h1>
       <p>Hi ${name.replace(/\b\w/g, (char) => char.toUpperCase())},</p>
       <p>We’re pleased to inform you that your CBSH Bank account has been successfully restored, and you now have full access to all banking services and features.</p>
-      <p>If you have any concerns or if this issue persists, feel free to reach out to our support team at <a href="mailto:support@cbshbank.com">support@cbshbank.com</a>.</p>
+      <p>If you have any concerns or if this issue persists, feel free to reach out to our support team at <a href="mailto:support@cbshvault.com">support@cbshvault.com</a>.</p>
       <p>Thank you for your patience and for banking with CBSH Bank.</p>
       <p>Warm regards,<br />The CBSH Bank Support Team</p>
     </div>

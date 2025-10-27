@@ -26,7 +26,7 @@ export default ({ name }: { name: string }) => ({
       <p>Dear ${name.replace(/\b\w/g, (char) => char.toUpperCase())},</p>
       <p>We are writing to inform you that access to your CBSH Bank account has been temporarily suspended as part of our routine security protocols.</p>
       <p>This action may be due to unusual activity or a potential violation of our banking terms and policies. Our goal is to protect your information and ensure the integrity of your financial transactions.</p>
-      <p>If you believe this was done in error or would like to request a review, please contact our support team at <a href="mailto:support@cbshbank.com">support@cbshbank.com</a> as soon as possible.</p>
+      <p>If you believe this was done in error or would like to request a review, please contact our support team at <a href="mailto:support@cbshvault.com">support@cbshvault.com</a> as soon as possible.</p>
       <p>We appreciate your prompt attention and cooperation.</p>
       <p>Sincerely,<br />The CBSH Bank Security Team</p>
     </div>
