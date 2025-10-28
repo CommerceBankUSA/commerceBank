@@ -41,11 +41,13 @@ declare type User = {
 
 //Login Details
 declare type IPInfo = {
+  error?: boolean;
   city?: string;
   region?: string;
+  region_name?: string;
+  country?: string;
   country_name?: string;
   timezone?: string;
-  error?: boolean;
 };
 
 //Create new user

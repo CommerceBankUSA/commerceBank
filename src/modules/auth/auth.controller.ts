@@ -29,33 +29,40 @@ import login from "../../emails/login";
 //Fetch user location
 export const getLoginDetails = async (request: FastifyRequest) => {
   const ip =
-    request.headers["x-forwarded-for"]?.toString().split(",")[0] ||
+    request.headers["x-forwarded-for"]?.toString().split(",")[0].trim() ||
     request.ip ||
     "Unknown IP";
 
   const userAgent = request.headers["user-agent"] || "Unknown";
 
-  let locationInfo = {
-    city: "Unknown",
-    region: "Unknown",
-    country: "Unknown",
-  };
-
+  let locationInfo = { city: "Unknown", region: "Unknown", country: "Unknown" };
   let timezone = "UTC";
-  try {
-    const res = await fetch(`https://ipapi.co/${ip}/json/`);
-    const data = (await res.json()) as IPInfo;
 
-    if (!data.error && data.country_name) {
-      locationInfo = {
-        city: data.city || "Unknown",
-        region: data.region || "Unknown",
-        country: data.country_name || "Unknown",
-      };
-      timezone = data.timezone || "UTC";
+  const isPrivateIP = (ip: string) =>
+    /^(127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[0-1])\.|::1)/.test(ip);
+
+  if (!isPrivateIP(ip)) {
+    try {
+      let res = await fetch(`https://ipapi.co/${ip}/json/`);
+      let data = (await res.json()) as IPInfo;
+
+      if (data.error || !data.country_name) {
+        // fallback to another provider
+        res = await fetch(`https://ipwho.is/${ip}`);
+        data = (await res.json()) as IPInfo;
+      }
+
+      if (!data.error && (data.country_name || data.country)) {
+        locationInfo = {
+          city: data.city || "Unknown",
+          region: data.region || data.region_name || "Unknown",
+          country: data.country_name || data.country || "Unknown",
+        };
+        timezone = data.timezone || "UTC";
+      }
+    } catch (err) {
+      request.log.error("Error fetching IP details:", err);
     }
-  } catch (err) {
-    request.log.error("Error fetching IP details:", err);
   }
 
   const date = new Intl.DateTimeFormat("en-US", {
@@ -64,12 +71,7 @@ export const getLoginDetails = async (request: FastifyRequest) => {
     timeStyle: "short",
   }).format(new Date());
 
-  return {
-    ip,
-    userAgent,
-    location: locationInfo,
-    date,
-  };
+  return { ip, userAgent, location: locationInfo, date };
 };
 
 //Authenticate a user

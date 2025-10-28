@@ -11,7 +11,10 @@ import {
   ownsSavings,
 } from "./savings.service";
 import { findAdminById } from "../admin/admin.service";
-import { createNewTransaction } from "../transaction/transaction.service";
+import {
+  createNewTransaction,
+  getUserBalance,
+} from "../transaction/transaction.service";
 import { newActivity } from "../activity/activity.services";
 
 //Schemas
@@ -37,8 +40,47 @@ export const createSavingsHandler = async (
   const userId = decodedDetails._id;
   const data = request.body;
 
-  //Create new Savings and return
+  //Fetch User Balance to make sure the user has that amount
+  const userBalance = await getUserBalance(userId);
+
+  if (data.savedAmount > userBalance)
+    return sendResponse(
+      reply,
+      400,
+      false,
+      "Insufficient Amount, kindly top up your balance to continue."
+    );
+
+  //Create new Savings and Transaction
   const newSavings = await createSavings({ user: userId, ...data });
+
+  const transactionId = generateTransactionHash();
+  const transactionData = {
+    amount: data.savedAmount,
+    transactionType: TransactionType.DEBIT,
+    subType: SubType.SAVINGS,
+    status: "successful",
+  };
+  const newTransaction = await createNewTransaction(
+    userId,
+    transactionData,
+    transactionId
+  );
+
+  //Send Notification
+  await emitAndSaveNotification({
+    user: userId,
+    type: "transaction",
+    subtype: TransactionType.DEBIT,
+    title: `Savings Deposit`,
+    message: `$${newTransaction.amount.toLocaleString()} was deposited to your ${newSavings.title} savings account.`,
+    data: {
+      transactionId: newTransaction.transactionId,
+      amount: newTransaction.amount,
+      date: newTransaction.createdAt,
+    },
+  });
+
   return sendResponse(
     reply,
     201,
@@ -48,7 +90,7 @@ export const createSavingsHandler = async (
   );
 };
 
-//Top up Savings amount
+// Top up Savings amount
 export const topUpSavingsHandler = async (
   request: FastifyRequest<{ Body: WithdrawSavingsInput }>,
   reply: FastifyReply
@@ -57,8 +99,9 @@ export const topUpSavingsHandler = async (
   const userId = decodedDetails._id;
   const { amount, savingsId } = request.body;
 
-  //Fetch Savings
+  //Fetch Savings and User Balance
   const savings = await ownsSavings(savingsId, userId);
+  const userBalance = await getUserBalance(userId);
   if (!savings)
     return sendResponse(
       reply,
@@ -67,8 +110,44 @@ export const topUpSavingsHandler = async (
       "We can't find that savings account. Please try again or select a different account."
     );
 
-  //Update Amount and return
+  if (amount > userBalance)
+    return sendResponse(
+      reply,
+      400,
+      false,
+      "Insufficient Amount, kindly top up your balance to continue."
+    );
+
+  //Update Amount and create transaction
   const editedSavings = await editSavings(savingsId, amount);
+
+  const transactionId = generateTransactionHash();
+  const transactionData = {
+    amount,
+    transactionType: TransactionType.DEBIT,
+    subType: SubType.SAVINGS,
+    status: "successful",
+  };
+  const newTransaction = await createNewTransaction(
+    userId,
+    transactionData,
+    transactionId
+  );
+
+  //Send Notification
+  await emitAndSaveNotification({
+    user: userId,
+    type: "transaction",
+    subtype: TransactionType.DEBIT,
+    title: `Savings Deposit`,
+    message: `$${newTransaction.amount.toLocaleString()} was deposited to your ${savings.title} savings account.`,
+    data: {
+      transactionId: newTransaction.transactionId,
+      amount: newTransaction.amount,
+      date: newTransaction.createdAt,
+    },
+  });
+
   return sendResponse(
     reply,
     200,

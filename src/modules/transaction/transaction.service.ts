@@ -83,7 +83,6 @@ export const getLastFiveTransactions = async (user: string) => {
   return transactions;
 };
 
-//Admin Services
 //Fetch all transactions with pagination
 export const getTransactions = async (page = 1, limit = 10) => {
   const skip = (page - 1) * limit;
