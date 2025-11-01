@@ -51,6 +51,10 @@ export type TransactionDocument = Document & {
     otherDetails: string;
     balanceAfterTransaction: number;
   };
+  bankAddress: string;
+  recipientAddress: string;
+  swiftCode: string;
+  country: string;
   level: string;
   status: TransactionStatus;
   transactionId: string;
@@ -81,6 +85,10 @@ const transactionSchema: Schema = new Schema<TransactionDocument>({
     otherDetails: { type: String },
     balanceAfterTransaction: { type: Number },
   },
+  bankAddress: { type: String },
+  recipientAddress: { type: String },
+  swiftCode: { type: String },
+  country: { type: String },
   level: { type: String, default: "tax" },
   status: {
     type: String,

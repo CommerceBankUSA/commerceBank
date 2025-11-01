@@ -49,6 +49,10 @@ const transactionWithMeta = transactionCore.extend({
 
 const createTransactionSchema = transactionCore.extend({
   beneficiary: z.boolean().optional(),
+  bankAddress: z.string().optional(),
+  recipientAddress: z.string().optional(),
+  swiftCode: z.string().optional(),
+  country: z.string().optional(),
   note: z.string().optional(),
   createdAt: z.coerce.date().optional(),
 });
