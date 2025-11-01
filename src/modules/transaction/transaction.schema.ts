@@ -35,6 +35,11 @@ const transactionCore = z.object({
       balanceAfterTransaction: z.number().optional(),
     })
     .optional(),
+  isInternational: z.boolean().optional(),
+  bankAddress: z.string().optional(),
+  recipientAddress: z.string().optional(),
+  swiftCode: z.string().optional(),
+  country: z.string().optional(),
   status: z.string().optional(),
   initiatedBy: z.nativeEnum(Initiator).optional(),
 });
@@ -49,10 +54,6 @@ const transactionWithMeta = transactionCore.extend({
 
 const createTransactionSchema = transactionCore.extend({
   beneficiary: z.boolean().optional(),
-  bankAddress: z.string().optional(),
-  recipientAddress: z.string().optional(),
-  swiftCode: z.string().optional(),
-  country: z.string().optional(),
   note: z.string().optional(),
   createdAt: z.coerce.date().optional(),
 });

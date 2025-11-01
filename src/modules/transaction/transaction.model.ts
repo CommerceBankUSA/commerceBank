@@ -51,6 +51,7 @@ export type TransactionDocument = Document & {
     otherDetails: string;
     balanceAfterTransaction: number;
   };
+  isInternational: boolean;
   bankAddress: string;
   recipientAddress: string;
   swiftCode: string;
@@ -85,6 +86,7 @@ const transactionSchema: Schema = new Schema<TransactionDocument>({
     otherDetails: { type: String },
     balanceAfterTransaction: { type: Number },
   },
+  isInternational: { type: Boolean, default: false },
   bankAddress: { type: String },
   recipientAddress: { type: String },
   swiftCode: { type: String },
