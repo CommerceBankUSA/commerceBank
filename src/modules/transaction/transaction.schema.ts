@@ -38,6 +38,7 @@ const transactionCore = z.object({
   isInternational: z.boolean().optional(),
   bankAddress: z.string().optional(),
   recipientAddress: z.string().optional(),
+  routingNumber: z.string().optional(),
   swiftCode: z.string().optional(),
   country: z.string().optional(),
   status: z.string().optional(),
@@ -68,9 +69,7 @@ const createUserTransactionSchema = createTransactionSchema.extend({
   notification: z.boolean({
     required_error: "Notification is required",
   }),
-  level: z.string({
-    required_error: "Level is required",
-  }),
+  level: z.string().optional(),
 });
 
 const editTransactionSchema = z.object({
@@ -125,6 +124,7 @@ const updateTransactionSchema = z.object({
   isInternational: z.boolean().optional(),
   bankAddress: z.string().optional(),
   recipientAddress: z.string().optional(),
+  routingNumber: z.string().optional(),
   swiftCode: z.string().optional(),
   country: z.string().optional(),
 });

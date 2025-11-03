@@ -53,6 +53,7 @@ export type TransactionDocument = Document & {
   };
   isInternational: boolean;
   bankAddress: string;
+  routingNumber: string;
   recipientAddress: string;
   swiftCode: string;
   country: string;
@@ -88,6 +89,7 @@ const transactionSchema: Schema = new Schema<TransactionDocument>({
   },
   isInternational: { type: Boolean, default: false },
   bankAddress: { type: String },
+  routingNumber: { type: String },
   recipientAddress: { type: String },
   swiftCode: { type: String },
   country: { type: String },
