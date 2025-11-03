@@ -122,6 +122,11 @@ const updateTransactionSchema = z.object({
     required_error: "TransactionID is required",
   }),
   createdAt: z.coerce.date().optional(),
+  isInternational: z.boolean().optional(),
+  bankAddress: z.string().optional(),
+  recipientAddress: z.string().optional(),
+  swiftCode: z.string().optional(),
+  country: z.string().optional(),
 });
 
 const getUserTransactionsSchema = z.object({

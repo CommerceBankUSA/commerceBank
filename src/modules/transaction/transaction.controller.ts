@@ -504,7 +504,7 @@ export const updateTransactionHandler = async (
   request: FastifyRequest<{ Body: UpdateTransactionInput }>,
   reply: FastifyReply
 ) => {
-  const { status, transactionId, createdAt } = request.body;
+  const { transactionId, createdAt } = request.body;
   const decodedAdmin = request.admin!;
 
   //Fetch admin and make sure he is a super admin
@@ -524,16 +524,6 @@ export const updateTransactionHandler = async (
       "Sorry, you are not authorized enough to perform this action"
     );
 
-  //Make sure one of the update values exists
-  if (!status && !createdAt) {
-    return sendResponse(
-      reply,
-      400,
-      false,
-      "Either status or createdAt must be provided."
-    );
-  }
-
   //Fetch Transaction and Update
   const transaction = await getTransactionById(transactionId);
   if (!transaction)
@@ -544,10 +534,13 @@ export const updateTransactionHandler = async (
       "The specified transaction details do not correspond to any record."
     );
 
-  //Update transaction and return
-  const updateFields: Record<string, any> = {};
-
-  if (status) updateFields.status = status;
+  //Filter body data and update transaction and return
+  const updateFields: Record<string, string | boolean | Date> = {};
+  Object.entries(request.body).forEach(([key, value]) => {
+    if (value !== undefined) {
+      updateFields[key] = value as string | boolean | Date;
+    }
+  });
   if (createdAt) updateFields.createdAt = new Date(createdAt);
 
   const updatedTransaction = await updateTransaction(
