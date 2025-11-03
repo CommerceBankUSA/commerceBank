@@ -9,7 +9,9 @@ export const registerSavingsCron = async (app: FastifyInstance) => {
         name: "apply-savings-interest",
         cronTime: "*/10 * * * *", // Every 10 minutes
         onTick: async () => {
-          app.log.info("Running hourly savings interest calculation job...");
+          app.log.info(
+            "Running 10 minutes savings interest calculation job..."
+          );
           try {
             await applyDailyInterest();
             app.log.info("Interest calculation completed.");
